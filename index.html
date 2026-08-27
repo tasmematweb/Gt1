@@ -1,10 +1,9 @@
-```html
 <!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إرسال وبحث في جوجل شيت</title>
+    <title>إرسال وبحث في جوجل شيت - مع الصور</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <style>
         body { background: #f5f7fa; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
@@ -13,12 +12,102 @@
         .btn-primary:hover { background-color: #0b5ed7; }
         .btn-success { background-color: #198754; border: none; padding: 12px; font-weight: bold; }
         .btn-success:hover { background-color: #157347; }
+        .btn-warning { background-color: #ffc107; border: none; padding: 12px; font-weight: bold; color: #000; }
+        .btn-warning:hover { background-color: #ffca2c; }
+        .btn-danger { background-color: #dc3545; border: none; padding: 8px 16px; font-weight: bold; }
+        .btn-danger:hover { background-color: #c82333; }
         .form-control:focus { border-color: #0d6efd; box-shadow: 0 0 0 3px rgba(13,110,253,0.25); }
         .alert { margin-top: 20px; }
-        .search-result { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px; border: 2px solid #e9ecef; }
-        .search-result .label { font-weight: bold; color: #495057; }
-        .search-result .value { color: #212529; }
+        .search-result { 
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-top: 15px; 
+            border: 2px solid #28a745;
+            box-shadow: 0 2px 10px rgba(40,167,69,0.1);
+        }
+        .search-result .label { 
+            font-weight: bold; 
+            color: #495057; 
+            display: inline-block;
+            width: 80px;
+        }
+        .search-result .value { 
+            color: #212529; 
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        .search-result .row-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .search-result .row-item:last-child {
+            border-bottom: none;
+        }
         .divider { border-top: 2px dashed #dee2e6; margin: 25px 0; }
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            margin-top: 10px;
+            object-fit: cover;
+        }
+        .preview-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+        .image-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .upload-btn {
+            width: 100%;
+        }
+        .image-result {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            object-fit: cover;
+            margin-top: 10px;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -27,15 +116,28 @@
     <div class="card p-4">
         <h3 class="text-center mb-4">📤 إرسال وبحث في جوجل شيت</h3>
         
-        <h5 class="mb-3">➕ إضافة بيانات جديدة</h5>
+        <h5 class="mb-3">➕ إضافة بيانات جديدة مع صورة</h5>
         <form id="sheetForm">
             <div class="mb-3">
                 <label for="name" class="form-label">الاسم</label>
                 <input type="text" class="form-control" id="name" placeholder="أدخل الاسم" required>
             </div>
-            <div class="mb-4">
+            <div class="mb-3">
                 <label for="phone" class="form-label">رقم الهاتف</label>
                 <input type="tel" class="form-control" id="phone" placeholder="مثال: 05xxxxxxxx" required>
+            </div>
+            <div class="mb-4">
+                <label for="image" class="form-label">الصورة</label>
+                <div class="file-input-wrapper">
+                    <button type="button" class="btn btn-warning upload-btn">📷 اختر صورة من المعرض</button>
+                    <input type="file" class="form-control" id="image" accept="image/*" capture="environment">
+                </div>
+                <div class="preview-container">
+                    <img id="imagePreview" class="image-preview d-none" alt="معاينة الصورة">
+                    <div class="image-actions">
+                        <button type="button" class="btn btn-danger btn-sm d-none" id="removeImageBtn">❌ إزالة الصورة</button>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary w-100" id="submitBtn">إرسال</button>
         </form>
@@ -51,68 +153,143 @@
                 <button class="btn btn-success" id="searchBtn" type="button">بحث</button>
             </div>
         </div>
+        
         <div id="searchResult" class="search-result d-none">
-            <div class="mb-2"><span class="label">الاسم:</span> <span class="value" id="resultName">-</span></div>
-            <div><span class="label">رقم الهاتف:</span> <span class="value" id="resultPhone">-</span></div>
+            <h6 class="text-success mb-3">✅ تم العثور على البيانات</h6>
+            <div class="row-item">
+                <span class="label">👤 الاسم:</span>
+                <span class="value" id="resultName">-</span>
+            </div>
+            <div class="row-item">
+                <span class="label">📱 الهاتف:</span>
+                <span class="value" id="resultPhone">-</span>
+            </div>
+            <div class="row-item">
+                <span class="label">🖼️ الصورة:</span>
+                <div id="resultImageContainer"></div>
+            </div>
         </div>
+        
         <div id="searchMessage" class="alert d-none" role="alert"></div>
     </div>
 </div>
 
 <script>
     (function() {
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Yu2kJBwB8Ry0Wf50IjXy8S34X29TqEWUPUMSU9yxQzIsVlR4lcEfVb5ezPvmJWHo/exec';
+        // رابط التطبيق الجديد بعد التحديث
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCaE5QMmdALU6bn-rjPBVfrtFahll1YX75KDA04wA5lpdF2YmDKeYLCDN6n1WDtHs/exec';
 
+        // عناصر الإرسال
         const form = document.getElementById('sheetForm');
         const nameInput = document.getElementById('name');
         const phoneInput = document.getElementById('phone');
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImageBtn = document.getElementById('removeImageBtn');
         const submitBtn = document.getElementById('submitBtn');
         const responseMsg = document.getElementById('responseMessage');
 
+        // عناصر البحث
         const searchPhoneInput = document.getElementById('searchPhone');
         const searchBtn = document.getElementById('searchBtn');
         const searchResult = document.getElementById('searchResult');
         const resultName = document.getElementById('resultName');
         const resultPhone = document.getElementById('resultPhone');
+        const resultImageContainer = document.getElementById('resultImageContainer');
         const searchMessage = document.getElementById('searchMessage');
 
+        // معاينة الصورة عند الاختيار من المعرض
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('d-none');
+                    removeImageBtn.classList.remove('d-none');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.classList.add('d-none');
+                removeImageBtn.classList.add('d-none');
+            }
+        });
+
+        // إزالة الصورة
+        removeImageBtn.addEventListener('click', function() {
+            imageInput.value = '';
+            imagePreview.classList.add('d-none');
+            imagePreview.src = '';
+            removeImageBtn.classList.add('d-none');
+        });
+
+        // دالة عرض الرسائل للإرسال
         function showMessage(text, type = 'success') {
             responseMsg.textContent = text;
             responseMsg.className = `alert alert-${type} d-block`;
         }
 
+        // دالة عرض رسائل البحث
         function showSearchMessage(text, type = 'success') {
             searchMessage.textContent = text;
             searchMessage.className = `alert alert-${type} d-block`;
-            if (type === 'success' || type === 'danger') {
-                searchResult.classList.add('d-none');
-            }
         }
 
+        // تعطيل/تفعيل زر الإرسال
         function setLoading(loading) {
             submitBtn.disabled = loading;
             submitBtn.innerHTML = loading ? 
-                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري الإرسال...' : 
+                '<span class="loading-spinner"></span> جاري الإرسال...' : 
                 'إرسال';
         }
 
+        // تعطيل/تفعيل زر البحث
+        function setSearchLoading(loading) {
+            searchBtn.disabled = loading;
+            searchBtn.innerHTML = loading ? 
+                '<span class="loading-spinner"></span> جاري البحث...' : 
+                'بحث';
+        }
+
+        // تحويل الصورة إلى Base64
+        function getImageBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // ========== إرسال البيانات مع الصورة ==========
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const name = nameInput.value.trim();
             const phone = phoneInput.value.trim();
+            const imageFile = imageInput.files[0];
 
             if (!name || !phone) {
-                showMessage('الرجاء ملء جميع الحقول', 'warning');
+                showMessage('⚠️ الرجاء ملء جميع الحقول', 'warning');
                 return;
             }
-
-            const payload = { name, phone };
 
             setLoading(true);
             responseMsg.className = 'alert d-none';
 
             try {
+                let imageBase64 = '';
+                if (imageFile) {
+                    imageBase64 = await getImageBase64(imageFile);
+                }
+
+                const payload = { 
+                    name, 
+                    phone,
+                    image: imageBase64
+                };
+
+                // استخدام no-cors لأننا لا نستطيع قراءة الرد
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -120,8 +297,11 @@
                     body: JSON.stringify(payload)
                 });
 
-                showMessage('✅ تم إرسال البيانات بنجاح إلى جوجل شيت!', 'success');
+                showMessage('✅ تم إرسال البيانات بنجاح!', 'success');
                 form.reset();
+                imagePreview.classList.add('d-none');
+                imagePreview.src = '';
+                removeImageBtn.classList.add('d-none');
 
             } catch (error) {
                 console.error('خطأ في الإرسال:', error);
@@ -131,25 +311,25 @@
             }
         });
 
+        // ========== البحث عن البيانات ==========
         searchBtn.addEventListener('click', async function() {
             const phone = searchPhoneInput.value.trim();
 
             if (!phone) {
                 showSearchMessage('⚠️ الرجاء إدخال رقم هاتف للبحث', 'warning');
+                searchResult.classList.add('d-none');
                 return;
             }
 
             searchResult.classList.add('d-none');
             searchMessage.className = 'alert d-none';
-
-            searchBtn.disabled = true;
-            searchBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> جاري البحث...';
+            setSearchLoading(true);
 
             try {
                 const url = `${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`;
                 const response = await fetch(url, {
                     method: 'GET',
-                    mode: 'cors'
+                    mode: 'cors' // نستخدم cors لقراءة الرد
                 });
 
                 if (!response.ok) {
@@ -157,12 +337,30 @@
                 }
 
                 const data = await response.json();
+                console.log('البيانات المستلمة:', data);
 
                 if (data.found) {
-                    resultName.textContent = data.name;
-                    resultPhone.textContent = data.phone;
+                    resultName.textContent = data.name || 'غير معروف';
+                    resultPhone.textContent = data.phone || 'غير معروف';
+                    
+                    // عرض الصورة إذا وجدت
+                    resultImageContainer.innerHTML = '';
+                    if (data.image && data.image.startsWith('http')) {
+                        const img = document.createElement('img');
+                        img.src = data.image;
+                        img.className = 'image-result';
+                        img.alt = 'صورة المستخدم';
+                        img.onerror = function() {
+                            this.style.display = 'none';
+                            resultImageContainer.innerHTML = '<span class="text-muted">⚠️ تعذر تحميل الصورة</span>';
+                        };
+                        resultImageContainer.appendChild(img);
+                    } else {
+                        resultImageContainer.innerHTML = '<span class="text-muted">لا توجد صورة</span>';
+                    }
+                    
                     searchResult.classList.remove('d-none');
-                    showSearchMessage('✅ تم العثور على البيانات', 'success');
+                    searchMessage.className = 'alert d-none';
                 } else {
                     showSearchMessage('❌ لم يتم العثور على رقم الهاتف', 'danger');
                     searchResult.classList.add('d-none');
@@ -173,11 +371,11 @@
                 showSearchMessage('❌ حدث خطأ أثناء البحث. تأكد من الرابط.', 'danger');
                 searchResult.classList.add('d-none');
             } finally {
-                searchBtn.disabled = false;
-                searchBtn.innerHTML = 'بحث';
+                setSearchLoading(false);
             }
         });
 
+        // السماح بالبحث بالضغط على Enter
         searchPhoneInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 searchBtn.click();
@@ -189,4 +387,3 @@
 
 </body>
 </html>
-```
