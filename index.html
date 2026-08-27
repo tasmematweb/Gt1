@@ -177,7 +177,7 @@
 <script>
     (function() {
         // رابط التطبيق الجديد
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOJTKVNMjhehJFhq7mwGMG9ZNKY4vMWJaflhIiJV4Lv7r1yY1YuNW_QLybVHyLL_io/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQ4PW_jusVrgA0qHH1Yc0eNjXqPkEWJD9BzS58LNU1iZMoMF10086FxVEjN46K6tVM/exec';
 
         // عناصر الإرسال
         const form = document.getElementById('sheetForm');
@@ -289,18 +289,24 @@
                     image: imageBase64
                 };
 
-                await fetch(SCRIPT_URL, {
+                const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                showMessage('✅ تم إرسال البيانات بنجاح!', 'success');
-                form.reset();
-                imagePreview.classList.add('d-none');
-                imagePreview.src = '';
-                removeImageBtn.classList.add('d-none');
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('✅ تم إرسال البيانات بنجاح!', 'success');
+                    form.reset();
+                    imagePreview.classList.add('d-none');
+                    imagePreview.src = '';
+                    removeImageBtn.classList.add('d-none');
+                } else {
+                    showMessage('❌ حدث خطأ: ' + result.error, 'danger');
+                }
 
             } catch (error) {
                 console.error('خطأ في الإرسال:', error);
