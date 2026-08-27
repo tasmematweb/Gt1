@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إرسال إلى جوجل شيت</title>
+    <!-- Bootstrap 5 RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <style>
+        body { background: #f5f7fa; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { width: 100%; max-width: 480px; border-radius: 24px; box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+        .btn-primary { background-color: #0d6efd; border: none; padding: 12px; font-weight: bold; letter-spacing: 0.5px; }
+        .btn-primary:hover { background-color: #0b5ed7; }
+        .form-control:focus { border-color: #0d6efd; box-shadow: 0 0 0 3px rgba(13,110,253,0.25); }
+        .alert { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card p-4">
+        <h3 class="text-center mb-4">📤 إرسال بيانات إلى جوجل شيت</h3>
+        <form id="sheetForm">
+            <div class="mb-3">
+                <label for="name" class="form-label">الاسم</label>
+                <input type="text" class="form-control" id="name" placeholder="أدخل الاسم" required>
+            </div>
+            <div class="mb-4">
+                <label for="phone" class="form-label">رقم الهاتف</label>
+                <input type="tel" class="form-control" id="phone" placeholder="مثال: 05xxxxxxxx" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" id="submitBtn">إرسال</button>
+        </form>
+        <div id="responseMessage" class="alert d-none" role="alert"></div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // رابط التطبيق الخاص بك بعد النشر
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUH7V9uw75myHJzLVNtpFtDb8hoK2ZW413-KU52p5Wo3RJQjDmXnywJEHUdHuaqLFc/exec';
+
+        const form = document.getElementById('sheetForm');
+        const nameInput = document.getElementById('name');
+        const phoneInput = document.getElementById('phone');
+        const submitBtn = document.getElementById('submitBtn');
+        const responseMsg = document.getElementById('responseMessage');
+
+        // دالة لعرض الرسائل
+        function showMessage(text, type = 'success') {
+            responseMsg.textContent = text;
+            responseMsg.className = `alert alert-${type} d-block`;
+        }
+
+        // تعطيل/تفعيل الزر أثناء الإرسال
+        function setLoading(loading) {
+            submitBtn.disabled = loading;
+            submitBtn.innerHTML = loading ? 
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري الإرسال...' : 
+                'إرسال';
+        }
+
+        // معالجة الإرسال
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // تنظيف المدخلات
+            const name = nameInput.value.trim();
+            const phone = phoneInput.value.trim();
+
+            if (!name || !phone) {
+                showMessage('الرجاء ملء جميع الحقول', 'warning');
+                return;
+            }
+
+            // إعداد البيانات
+            const payload = {
+                name: name,
+                phone: phone
+            };
+
+            setLoading(true);
+            responseMsg.className = 'alert d-none'; // إخفاء الرسالة القديمة
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // ضروري للتواصل مع Web App بدون CORS
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // بما أننا استخدمنا no-cors، لا يمكن قراءة الرد، لكن نعرف أن الطلب وصل.
+                // نعرض رسالة نجاح افتراضية.
+                showMessage('✅ تم إرسال البيانات بنجاح إلى جوجل شيت!', 'success');
+                form.reset(); // تفريغ الحقول
+
+            } catch (error) {
+                console.error('خطأ في الإرسال:', error);
+                showMessage('❌ حدث خطأ أثناء الإرسال. تأكد من الرابط أو اتصال الإنترنت.', 'danger');
+            } finally {
+                setLoading(false);
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>
