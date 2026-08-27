@@ -14,7 +14,7 @@
         .btn-success:hover { background-color: #157347; }
         .btn-warning { background-color: #ffc107; border: none; padding: 12px; font-weight: bold; color: #000; }
         .btn-warning:hover { background-color: #ffca2c; }
-        .btn-danger { background-color: #dc3545; border: none; padding: 8px 16px; font-weight: bold; }
+        .btn-danger { background-color: #dc3545; border: none; padding: 12px; font-weight: bold; }
         .btn-danger:hover { background-color: #c82333; }
         .form-control:focus { border-color: #0d6efd; box-shadow: 0 0 0 3px rgba(13,110,253,0.25); }
         .alert { margin-top: 20px; }
@@ -108,6 +108,31 @@
             opacity: 0.7;
             cursor: not-allowed;
         }
+        .log-box {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            direction: ltr;
+            text-align: left;
+            border: 2px solid #333;
+        }
+        .log-box .log-error { color: #ff4444; }
+        .log-box .log-success { color: #44ff44; }
+        .log-box .log-info { color: #44aaff; }
+        .log-box .log-warning { color: #ffaa44; }
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .log-header h6 { margin: 0; }
     </style>
 </head>
 <body>
@@ -171,13 +196,42 @@
         </div>
         
         <div id="searchMessage" class="alert d-none" role="alert"></div>
+
+        <!-- قسم السجلات -->
+        <div class="log-header">
+            <h6 class="text-muted">📋 سجل الأخطاء والتشغيل</h6>
+            <button class="btn btn-sm btn-outline-secondary" id="clearLogBtn">مسح</button>
+        </div>
+        <div class="log-box" id="logBox">
+            <div class="log-info">⏳ جاهز...</div>
+        </div>
     </div>
 </div>
 
 <script>
     (function() {
-        // رابط التطبيق الجديد
+        // رابط التطبيق
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQ4PW_jusVrgA0qHH1Yc0eNjXqPkEWJD9BzS58LNU1iZMoMF10086FxVEjN46K6tVM/exec';
+
+        // عناصر السجلات
+        const logBox = document.getElementById('logBox');
+        const clearLogBtn = document.getElementById('clearLogBtn');
+
+        // دالة إضافة سجل
+        function addLog(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-${type}`;
+            entry.textContent = `[${time}] ${message}`;
+            logBox.appendChild(entry);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        // مسح السجلات
+        clearLogBtn.addEventListener('click', function() {
+            logBox.innerHTML = '';
+            addLog('🗑️ تم مسح السجلات', 'info');
+        });
 
         // عناصر الإرسال
         const form = document.getElementById('sheetForm');
@@ -198,10 +252,14 @@
         const resultImageContainer = document.getElementById('resultImageContainer');
         const searchMessage = document.getElementById('searchMessage');
 
-        // معاينة الصورة عند الاختيار من المعرض
+        addLog('✅ تم تحميل الصفحة بنجاح', 'success');
+        addLog(`🔗 رابط التطبيق: ${SCRIPT_URL}`, 'info');
+
+        // معاينة الصورة
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
+                addLog(`📷 تم اختيار صورة: ${file.name} (${(file.size/1024).toFixed(1)} KB)`, 'info');
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     imagePreview.src = e.target.result;
@@ -210,32 +268,30 @@
                 };
                 reader.readAsDataURL(file);
             } else {
+                addLog('❌ لم يتم اختيار صورة', 'warning');
                 imagePreview.classList.add('d-none');
                 removeImageBtn.classList.add('d-none');
             }
         });
 
-        // إزالة الصورة
         removeImageBtn.addEventListener('click', function() {
             imageInput.value = '';
             imagePreview.classList.add('d-none');
             imagePreview.src = '';
             removeImageBtn.classList.add('d-none');
+            addLog('🗑️ تم إزالة الصورة', 'info');
         });
 
-        // دالة عرض الرسائل للإرسال
         function showMessage(text, type = 'success') {
             responseMsg.textContent = text;
             responseMsg.className = `alert alert-${type} d-block`;
         }
 
-        // دالة عرض رسائل البحث
         function showSearchMessage(text, type = 'success') {
             searchMessage.textContent = text;
             searchMessage.className = `alert alert-${type} d-block`;
         }
 
-        // تعطيل/تفعيل زر الإرسال
         function setLoading(loading) {
             submitBtn.disabled = loading;
             submitBtn.innerHTML = loading ? 
@@ -243,7 +299,6 @@
                 'إرسال';
         }
 
-        // تعطيل/تفعيل زر البحث
         function setSearchLoading(loading) {
             searchBtn.disabled = loading;
             searchBtn.innerHTML = loading ? 
@@ -251,7 +306,6 @@
                 'بحث';
         }
 
-        // تحويل الصورة إلى Base64
         function getImageBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -261,7 +315,7 @@
             });
         }
 
-        // ========== إرسال البيانات مع الصورة ==========
+        // ========== إرسال البيانات ==========
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -269,7 +323,12 @@
             const phone = phoneInput.value.trim();
             const imageFile = imageInput.files[0];
 
+            addLog('📤 بدء عملية الإرسال...', 'info');
+            addLog(`👤 الاسم: ${name}`, 'info');
+            addLog(`📱 الهاتف: ${phone}`, 'info');
+
             if (!name || !phone) {
+                addLog('⚠️ الرجاء ملء جميع الحقول', 'warning');
                 showMessage('⚠️ الرجاء ملء جميع الحقول', 'warning');
                 return;
             }
@@ -280,14 +339,15 @@
             try {
                 let imageBase64 = '';
                 if (imageFile) {
+                    addLog('🔄 جاري تحويل الصورة إلى Base64...', 'info');
                     imageBase64 = await getImageBase64(imageFile);
+                    addLog(`✅ تم تحويل الصورة (${(imageBase64.length/1024).toFixed(1)} KB)`, 'success');
+                } else {
+                    addLog('ℹ️ لم يتم اختيار صورة', 'info');
                 }
 
-                const payload = { 
-                    name, 
-                    phone,
-                    image: imageBase64
-                };
+                const payload = { name, phone, image: imageBase64 };
+                addLog('📡 جاري إرسال البيانات إلى الخادم...', 'info');
 
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
@@ -296,23 +356,34 @@
                     body: JSON.stringify(payload)
                 });
 
+                addLog(`📡 استجابة الخادم: ${response.status} ${response.statusText}`, 'info');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
                 const result = await response.json();
-                
+                addLog(`📦 بيانات الاستجابة: ${JSON.stringify(result)}`, 'info');
+
                 if (result.success) {
+                    addLog(`✅ تم الإرسال بنجاح! رابط الصورة: ${result.imageUrl || 'لا توجد صورة'}`, 'success');
                     showMessage('✅ تم إرسال البيانات بنجاح!', 'success');
                     form.reset();
                     imagePreview.classList.add('d-none');
                     imagePreview.src = '';
                     removeImageBtn.classList.add('d-none');
                 } else {
-                    showMessage('❌ حدث خطأ: ' + result.error, 'danger');
+                    addLog(`❌ فشل الإرسال: ${result.error}`, 'error');
+                    showMessage(`❌ حدث خطأ: ${result.error}`, 'danger');
                 }
 
             } catch (error) {
+                addLog(`❌ خطأ: ${error.message}`, 'error');
                 console.error('خطأ في الإرسال:', error);
                 showMessage('❌ حدث خطأ أثناء الإرسال.', 'danger');
             } finally {
                 setLoading(false);
+                addLog('🏁 انتهت عملية الإرسال', 'info');
             }
         });
 
@@ -320,7 +391,11 @@
         searchBtn.addEventListener('click', async function() {
             const phone = searchPhoneInput.value.trim();
 
+            addLog('🔍 بدء عملية البحث...', 'info');
+            addLog(`📱 رقم الهاتف المطلوب: ${phone}`, 'info');
+
             if (!phone) {
+                addLog('⚠️ الرجاء إدخال رقم هاتف للبحث', 'warning');
                 showSearchMessage('⚠️ الرجاء إدخال رقم هاتف للبحث', 'warning');
                 searchResult.classList.add('d-none');
                 return;
@@ -332,49 +407,64 @@
 
             try {
                 const url = `${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`;
+                addLog(`📡 جاري البحث عبر: ${url}`, 'info');
+
                 const response = await fetch(url, {
                     method: 'GET',
                     mode: 'cors'
                 });
 
+                addLog(`📡 استجابة الخادم: ${response.status} ${response.statusText}`, 'info');
+
                 if (!response.ok) {
-                    throw new Error('فشل في جلب البيانات');
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
 
                 const data = await response.json();
+                addLog(`📦 بيانات الاستجابة: ${JSON.stringify(data)}`, 'info');
 
                 if (data.found) {
+                    addLog(`✅ تم العثور على البيانات: ${data.name}`, 'success');
                     resultName.textContent = data.name || 'غير معروف';
                     resultPhone.textContent = data.phone || 'غير معروف';
                     
                     resultImageContainer.innerHTML = '';
                     if (data.image && data.image.startsWith('http')) {
+                        addLog(`🖼️ رابط الصورة: ${data.image}`, 'info');
                         const img = document.createElement('img');
                         img.src = data.image;
                         img.className = 'image-result';
                         img.alt = 'صورة المستخدم';
+                        img.onload = function() {
+                            addLog('✅ تم تحميل الصورة بنجاح', 'success');
+                        };
                         img.onerror = function() {
                             this.style.display = 'none';
                             resultImageContainer.innerHTML = '<span class="text-muted">⚠️ تعذر تحميل الصورة</span>';
+                            addLog('⚠️ تعذر تحميل الصورة', 'warning');
                         };
                         resultImageContainer.appendChild(img);
                     } else {
+                        addLog('ℹ️ لا توجد صورة', 'info');
                         resultImageContainer.innerHTML = '<span class="text-muted">لا توجد صورة</span>';
                     }
                     
                     searchResult.classList.remove('d-none');
                     searchMessage.className = 'alert d-none';
                 } else {
-                    showSearchMessage('❌ لم يتم العثور على رقم الهاتف', 'danger');
+                    addLog(`❌ لم يتم العثور على رقم الهاتف: ${data.message}`, 'error');
+                    showSearchMessage(`❌ ${data.message || 'لم يتم العثور على رقم الهاتف'}`, 'danger');
                     searchResult.classList.add('d-none');
                 }
 
             } catch (error) {
+                addLog(`❌ خطأ: ${error.message}`, 'error');
                 console.error('خطأ في البحث:', error);
                 showSearchMessage('❌ حدث خطأ أثناء البحث. تأكد من الرابط.', 'danger');
                 searchResult.classList.add('d-none');
             } finally {
                 setSearchLoading(false);
+                addLog('🏁 انتهت عملية البحث', 'info');
             }
         });
 
@@ -383,6 +473,9 @@
                 searchBtn.click();
             }
         });
+
+        // إضافة سجل عند تحميل الصفحة
+        addLog('🚀 الموقع جاهز للاستخدام', 'success');
 
     })();
 </script>
