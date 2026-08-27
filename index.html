@@ -176,8 +176,8 @@
 
 <script>
     (function() {
-        // رابط التطبيق الجديد بعد التحديث
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCaE5QMmdALU6bn-rjPBVfrtFahll1YX75KDA04wA5lpdF2YmDKeYLCDN6n1WDtHs/exec';
+        // رابط التطبيق الجديد
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOJTKVNMjhehJFhq7mwGMG9ZNKY4vMWJaflhIiJV4Lv7r1yY1YuNW_QLybVHyLL_io/exec';
 
         // عناصر الإرسال
         const form = document.getElementById('sheetForm');
@@ -289,7 +289,6 @@
                     image: imageBase64
                 };
 
-                // استخدام no-cors لأننا لا نستطيع قراءة الرد
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -329,7 +328,7 @@
                 const url = `${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`;
                 const response = await fetch(url, {
                     method: 'GET',
-                    mode: 'cors' // نستخدم cors لقراءة الرد
+                    mode: 'cors'
                 });
 
                 if (!response.ok) {
@@ -337,13 +336,11 @@
                 }
 
                 const data = await response.json();
-                console.log('البيانات المستلمة:', data);
 
                 if (data.found) {
                     resultName.textContent = data.name || 'غير معروف';
                     resultPhone.textContent = data.phone || 'غير معروف';
                     
-                    // عرض الصورة إذا وجدت
                     resultImageContainer.innerHTML = '';
                     if (data.image && data.image.startsWith('http')) {
                         const img = document.createElement('img');
@@ -375,7 +372,6 @@
             }
         });
 
-        // السماح بالبحث بالضغط على Enter
         searchPhoneInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 searchBtn.click();
