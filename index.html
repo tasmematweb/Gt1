@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tasmematweb | تصميم وتطوير المواقع والتطبيقات</title>
-    <!-- خط Readex Pro الاحترافي -->
-    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #06030e;
@@ -34,7 +33,51 @@
         }
 
         /* ----------------------------------------------------
-           1. الخلفية الانسيابية ثلاثية الأبعاد (3D Glowing Waves)
+           1. شاشة البداية (Splash Screen Animation)
+        ---------------------------------------------------- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-dark);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s cubic-bezier(0.65, 0, 0.35, 1), visibility 0.8s;
+        }
+
+        .splash-logo {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            direction: ltr;
+            animation: logoIntro 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes logoIntro {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* اخفاء شاشة البداية وتحريك الشعار للأعلى */
+        body.loaded #splash-screen {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* ----------------------------------------------------
+           2. الخلفية ثلاثية الأبعاد والأضواء الانسيابية
         ---------------------------------------------------- */
         .bg-fluid-container {
             position: fixed;
@@ -97,7 +140,7 @@
         }
 
         /* ----------------------------------------------------
-           2. الشريط العلوي (Navbar) وشعار الـ 3D
+           3. الشريط العلوي (Navbar) وشعار الـ 3D
         ---------------------------------------------------- */
         nav {
             position: fixed;
@@ -112,6 +155,14 @@
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(168, 85, 247, 0.15);
             z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+        }
+
+        body.loaded nav {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .logo-3d-swap {
@@ -189,8 +240,19 @@
         }
 
         /* ----------------------------------------------------
-           3. قسم البطولة (Hero Section & Text Scramble)
+           4. محتوى الصفحة الرئيسي (Hero Section)
         ---------------------------------------------------- */
+        .main-content {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+        }
+
+        body.loaded .main-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .hero {
             padding: 170px 8% 80px;
             text-align: center;
@@ -213,22 +275,20 @@
             box-shadow: 0 0 15px rgba(168, 85, 247, 0.15);
         }
 
-        /* نمط النص المتغير (Text Scramble) */
-        .scramble-title {
+        .hero h1 {
             font-size: clamp(2.4rem, 5.5vw, 4.2rem);
             font-weight: 800;
             line-height: 1.25;
             margin-bottom: 22px;
-            min-height: 120px;
-            background: linear-gradient(135deg, #ffffff 40%, #c084fc 70%, var(--accent-cyan));
+            background: linear-gradient(180deg, #ffffff 40%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .doodle-char {
-            color: var(--primary-purple);
-            opacity: 0.7;
-            font-family: 'Fira Code', monospace;
+        .hero h1 span {
+            background: linear-gradient(135deg, #c084fc, #a855f7, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
@@ -279,7 +339,7 @@
         }
 
         /* ----------------------------------------------------
-           4. شبكة البطاقات الداكنة المضاءة بالنيون
+           5. شبكة البطاقات الداكنة المضاءة بالنيون
         ---------------------------------------------------- */
         .features-section {
             padding: 80px 8%;
@@ -385,7 +445,7 @@
         }
 
         /* ----------------------------------------------------
-           5. بنر التواصل
+           6. بنر التواصل
         ---------------------------------------------------- */
         .cta-banner {
             margin: 80px 8% 100px;
@@ -413,7 +473,24 @@
 </head>
 <body>
 
-    <!-- 1. الخلفية ثلاثية الأبعاد والأضواء الانسيابية -->
+    <!-- 1. شاشة التنسيق عند الفتح (Intro Splash Screen) -->
+    <div id="splash-screen">
+        <div class="logo-3d-swap splash-logo" dir="ltr">
+            <span class="char-wrapper"><span class="char-inner">t</span></span>
+            <span class="char-wrapper"><span class="char-inner">a</span></span>
+            <span class="char-wrapper"><span class="char-inner">s</span></span>
+            <span class="char-wrapper"><span class="char-inner">m</span></span>
+            <span class="char-wrapper"><span class="char-inner">e</span></span>
+            <span class="char-wrapper"><span class="char-inner">m</span></span>
+            <span class="char-wrapper"><span class="char-inner">a</span></span>
+            <span class="char-wrapper"><span class="char-inner">t</span></span>
+            <span class="char-wrapper"><span class="char-inner">w</span></span>
+            <span class="char-wrapper"><span class="char-inner">e</span></span>
+            <span class="char-wrapper"><span class="char-inner">b</span></span>
+        </div>
+    </div>
+
+    <!-- 2. الخلفية ثلاثية الأبعاد والأضواء الانسيابية -->
     <div class="bg-fluid-container">
         <div class="glow-orb glow-1"></div>
         <div class="glow-orb glow-2"></div>
@@ -435,7 +512,7 @@
         </svg>
     </div>
 
-    <!-- 2. Navbar مع شعار الـ 3D التلقائي -->
+    <!-- 3. Navbar مع شعار الـ 3D -->
     <nav>
         <div class="logo-3d-swap" dir="ltr">
             <span class="char-wrapper"><span class="char-inner">t</span></span>
@@ -459,158 +536,92 @@
         <a href="https://instagram.com/tasmematweb" target="_blank" class="nav-btn">اطلب الآن</a>
     </nav>
 
-    <!-- 3. Hero Section مع نص التشفير المتغير (Text Scramble) -->
-    <section class="hero">
-        <div class="badge">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            تطوير برمجيات ومواقع احترافية
-        </div>
-        
-        <!-- عنوان يتغير بتأثير Text Scramble بنفس طريقة الفيديو -->
-        <h1 class="scramble-title" id="scrambleText">نُنشئ لك مستقبلك الرقمي بكل إتقان</h1>
+    <!-- 4. محتوى الصفحة الرئيسية -->
+    <div class="main-content">
+        <section class="hero">
+            <div class="badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                تطوير برمجيات ومواقع احترافية
+            </div>
+            
+            <h1>نُنشئ لك <span>مستقبلك الرقمي</span> بكل إتقان</h1>
 
-        <p>نحول أفكارك البرمجية والتجارية إلى مواقع وتطبيقات تفاعلية فائقة السرعة، بتصميم عصري وأعلى معايير الأمان.</p>
-        <div class="cta-group">
-            <a href="https://instagram.com/tasmematweb" target="_blank" class="btn-primary">ابدأ مشروعك اليوم ←</a>
-            <a href="#services" class="btn-secondary">استكشف خدماتنا</a>
-        </div>
-    </section>
+            <p>نحول أفكارك البرمجية والتجارية إلى مواقع وتطبيقات تفاعلية فائقة السرعة، بتصميم عصري وأعلى معايير الأمان.</p>
+            <div class="cta-group">
+                <a href="https://instagram.com/tasmematweb" target="_blank" class="btn-primary">ابدأ مشروعك اليوم ←</a>
+                <a href="#services" class="btn-secondary">استكشف خدماتنا</a>
+            </div>
+        </section>
 
-    <!-- 4. شبكة البطاقات (Services Grid) -->
-    <section class="features-section" id="services">
-        <div class="section-header">
-            <h2>خدماتنا ومميزاتنا</h2>
-            <p>كل ما يحتاجه مشروعك للظهور بأفضل صورة رقمية احترافية</p>
-        </div>
-
-        <div class="grid">
-            <div class="card">
-                <div>
-                    <div class="icon-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    </div>
-                    <h3>إنشاء مواقع وتطبيقات</h3>
-                    <p>برمجة وتصميم منصات الويب والمتاجر والتطبيقات بأحدث التقنيات وأفضل واجهات المستخدم UI/UX.</p>
-                </div>
-                <div class="card-tag">⚡ أداء فائق وسرعة عاليّة</div>
+        <!-- 5. شبكة البطاقات الداكنة (Services Grid) -->
+        <section class="features-section" id="services">
+            <div class="section-header">
+                <h2>خدماتنا ومميزاتنا</h2>
+                <p>كل ما يحتاجه مشروعك للظهور بأفضل صورة رقمية احترافية</p>
             </div>
 
-            <div class="card">
-                <div>
-                    <div class="icon-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            <div class="grid">
+                <div class="card">
+                    <div>
+                        <div class="icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        </div>
+                        <h3>إنشاء مواقع وتطبيقات</h3>
+                        <p>برمجة وتصميم منصات الويب والمتاجر والتطبيقات بأحدث التقنيات وأفضل واجهات المستخدم UI/UX.</p>
                     </div>
-                    <h3>تنفيذ أي فكرة</h3>
-                    <p>مهما كانت فكرة مشروعك مبتكرة أو معقدة، نملك الخبرة لتجسيدها على أرض الواقع بكفاءة ممتازة.</p>
+                    <div class="card-tag">⚡ أداء فائق وسرعة عاليّة</div>
                 </div>
-                <div class="card-tag">💡 حلول مخصصة بالكامل</div>
-            </div>
 
-            <div class="card">
-                <div>
-                    <div class="icon-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <div class="card">
+                    <div>
+                        <div class="icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                        </div>
+                        <h3>تنفيذ أي فكرة</h3>
+                        <p>مهما كانت فكرة مشروعك مبتكرة أو معقدة، نملك الخبرة لتجسيدها على أرض الواقع بكفاءة ممتازة.</p>
                     </div>
-                    <h3>التنفيذ في أسرع وقت</h3>
-                    <p>نحرص على تسليم جميع البرمجيات والمواقع في أسرع وقت ممكن وفق جدول زمني دقيق ومحدد.</p>
+                    <div class="card-tag">💡 حلول مخصصة بالكامل</div>
                 </div>
-                <div class="card-tag">🚀 تسليم سريع ودقيق</div>
-            </div>
 
-            <div class="card">
-                <div>
-                    <div class="icon-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <div class="card">
+                    <div>
+                        <div class="icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        </div>
+                        <h3>التنفيذ في أسرع وقت</h3>
+                        <p>نحرص على تسليم جميع البرمجيات والمواقع في أسرع وقت ممكن وفق جدول زمني دقيق ومحدد.</p>
                     </div>
-                    <h3>الدفع بعد الاستلام</h3>
-                    <p>نعمل بثقة شفافة؛ لا تدفع قيمة الخدمة إلا بعد معاينة مشروعك وااختباره والتأكد من إتقانه تماماً.</p>
+                    <div class="card-tag">🚀 تسليم سريع ودقيق</div>
                 </div>
-                <div class="card-tag">🛡️ ضمان ورضا كامل</div>
+
+                <div class="card">
+                    <div>
+                        <div class="icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h3>الدفع بعد الاستلام</h3>
+                        <p>نعمل بثقة شفافة؛ لا تدفع قيمة الخدمة إلا بعد معاينة مشروعك واختباره والتأكد من إتقانه تماماً.</p>
+                    </div>
+                    <div class="card-tag">🛡️ ضمان ورضا كامل</div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 5. CTA Banner -->
-    <section class="cta-banner" id="contact">
-        <h2>جاهز لتحويل فكرتك إلى مشروع ناجح؟</h2>
-        <p style="color: var(--text-muted); margin-bottom: 28px;">تواصل معنا مباشرة عبر حسابنا في إنستغرام وابدأ الاستشارة مجاناً.</p>
-        <a href="https://instagram.com/tasmematweb" target="_blank" class="btn-primary">تواصل معنا عبر إنستغرام @tasmematweb</a>
-    </section>
+        <!-- 6. بنر التواصل -->
+        <section class="cta-banner" id="contact">
+            <h2>جاهز لتحويل فكرتك إلى مشروع ناجح؟</h2>
+            <p style="color: var(--text-muted); margin-bottom: 28px;">تواصل معنا مباشرة عبر حسابنا في إنستغرام وابدأ الاستشارة مجاناً.</p>
+            <a href="https://instagram.com/tasmematweb" target="_blank" class="btn-primary">تواصل معنا عبر إنستغرام @tasmematweb</a>
+        </section>
+    </div>
 
-    <!-- JavaScript لتأثير Text Scramble المماثل للفيديو -->
+    <!-- كود تفعيل حركة ظهور الصفحة وانتقال الشعار -->
     <script>
-        class TextScramble {
-            constructor(el) {
-                this.el = el;
-                this.chars = '!<>-_\\/[]{}—=+*^?#________';
-                this.update = this.update.bind(this);
-            }
-            setText(newText) {
-                const oldText = this.el.innerText;
-                const length = Math.max(oldText.length, newText.length);
-                const promise = new Promise((resolve) => this.resolve = resolve);
-                this.queue = [];
-                for (let i = 0; i < length; i++) {
-                    const from = oldText[i] || '';
-                    const to = newText[i] || '';
-                    const start = Math.floor(Math.random() * 25);
-                    const end = start + Math.floor(Math.random() * 25);
-                    this.queue.push({ from, to, start, end });
-                }
-                cancelAnimationFrame(this.frameRequest);
-                this.frame = 0;
-                this.update();
-                return promise;
-            }
-            update() {
-                let output = '';
-                let complete = 0;
-                for (let i = 0, n = this.queue.length; i < n; i++) {
-                    let { from, to, start, end, char } = this.queue[i];
-                    if (this.frame >= end) {
-                        complete++;
-                        output += to;
-                    } else if (this.frame >= start) {
-                        if (!char || Math.random() < 0.28) {
-                            char = this.randomChar();
-                            this.queue[i].char = char;
-                        }
-                        output += `<span class="doodle-char">${char}</span>`;
-                    } else {
-                        output += from;
-                    }
-                }
-                this.el.innerHTML = output;
-                if (complete === this.queue.length) {
-                    this.resolve();
-                } else {
-                    this.frameRequest = requestAnimationFrame(this.update);
-                    this.frame++;
-                }
-            }
-            randomChar() {
-                return this.chars[Math.floor(Math.random() * this.chars.length)];
-            }
-        }
-
-        const phrases = [
-            'نُنشئ لك مستقبلك الرقمي بكل إتقان',
-            'مواقع وتطبيقات سريعة ومبهورة البناء',
-            'تصميمات عصرية برؤية مستقبليّة'
-        ];
-
-        const el = document.getElementById('scrambleText');
-        const fx = new TextScramble(el);
-
-        let counter = 0;
-        const nextPhrase = () => {
-            fx.setText(phrases[counter]).then(() => {
-                setTimeout(nextPhrase, 3500);
-            });
-            counter = (counter + 1) % phrases.length;
-        };
-
-        nextPhrase();
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 1400);
+        });
     </script>
 </body>
 </html>
