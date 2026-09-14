@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tasmematweb | نُنشئ لك مستقبلك</title>
-    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- خط Readex Pro الاحترافي للتصميم العصري -->
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #07040d;
@@ -29,18 +30,10 @@
             color: var(--text-main);
             overflow-x: hidden;
             position: relative;
-            user-select: none;
-        }
-
-        /* 0. خلفية ASCII Ripple Canvas */
-        #ascii-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 40%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
         }
 
         /* 1. الشريط العلوي (Navbar) */
@@ -53,13 +46,13 @@
             justify-content: space-between;
             align-items: center;
             padding: 18px 8%;
-            background: rgba(7, 4, 13, 0.8);
+            background: rgba(7, 4, 13, 0.85);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 1000;
         }
 
-        /* شعار 3D Letter Swap */
+        /* شعار 3D Letter Swap التلقائي كل 3 ثواني */
         .logo-3d-swap {
             display: inline-flex;
             direction: ltr;
@@ -78,31 +71,34 @@
 
         .char-inner {
             display: inline-block;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             transform-style: preserve-3d;
             background: linear-gradient(135deg, #ffffff 40%, var(--primary-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: autoRotate3d 3s infinite cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* دوران الحروف عند مرر الماوس أو اللمس */
-        .logo-3d-swap:hover .char-inner,
-        .logo-3d-swap.active .char-inner {
-            transform: rotateX(360deg);
+        @keyframes autoRotate3d {
+            0%, 65% {
+                transform: rotateX(0deg);
+            }
+            80%, 100% {
+                transform: rotateX(360deg);
+            }
         }
 
         /* تأخير زمني متتابع بين الحروف (Stagger Effect) */
-        .char-wrapper:nth-child(1) .char-inner { transition-delay: 0.04s; }
-        .char-wrapper:nth-child(2) .char-inner { transition-delay: 0.08s; }
-        .char-wrapper:nth-child(3) .char-inner { transition-delay: 0.12s; }
-        .char-wrapper:nth-child(4) .char-inner { transition-delay: 0.16s; }
-        .char-wrapper:nth-child(5) .char-inner { transition-delay: 0.20s; }
-        .char-wrapper:nth-child(6) .char-inner { transition-delay: 0.24s; }
-        .char-wrapper:nth-child(7) .char-inner { transition-delay: 0.28s; }
-        .char-wrapper:nth-child(8) .char-inner { transition-delay: 0.32s; }
-        .char-wrapper:nth-child(9) .char-inner { transition-delay: 0.36s; }
-        .char-wrapper:nth-child(10) .char-inner { transition-delay: 0.40s; }
-        .char-wrapper:nth-child(11) .char-inner { transition-delay: 0.44s; }
+        .char-wrapper:nth-child(1) .char-inner { animation-delay: 0.05s; }
+        .char-wrapper:nth-child(2) .char-inner { animation-delay: 0.10s; }
+        .char-wrapper:nth-child(3) .char-inner { animation-delay: 0.15s; }
+        .char-wrapper:nth-child(4) .char-inner { animation-delay: 0.20s; }
+        .char-wrapper:nth-child(5) .char-inner { animation-delay: 0.25s; }
+        .char-wrapper:nth-child(6) .char-inner { animation-delay: 0.30s; }
+        .char-wrapper:nth-child(7) .char-inner { animation-delay: 0.35s; }
+        .char-wrapper:nth-child(8) .char-inner { animation-delay: 0.40s; }
+        .char-wrapper:nth-child(9) .char-inner { animation-delay: 0.45s; }
+        .char-wrapper:nth-child(10) .char-inner { animation-delay: 0.50s; }
+        .char-wrapper:nth-child(11) .char-inner { animation-delay: 0.55s; }
 
         .nav-links {
             display: flex;
@@ -140,8 +136,6 @@
 
         /* 2. قسم البطولة (Hero Section) */
         .hero {
-            position: relative;
-            z-index: 10;
             padding: 160px 8% 80px;
             text-align: center;
             max-width: 1000px;
@@ -227,8 +221,6 @@
 
         /* 3. معاينة الواجهة (Interface Preview Mockup) */
         .preview-wrapper {
-            position: relative;
-            z-index: 10;
             max-width: 1000px;
             margin: 50px auto 100px;
             padding: 0 8%;
@@ -272,8 +264,6 @@
 
         /* 4. شبكة المميزات (Features SaaS Grid) */
         .features-section {
-            position: relative;
-            z-index: 10;
             padding: 80px 8%;
             max-width: 1200px;
             margin: 0 auto;
@@ -344,8 +334,6 @@
 
         /* 5. شريط الضمان والتواصل */
         .cta-banner {
-            position: relative;
-            z-index: 10;
             margin: 100px 8% 80px;
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(6, 182, 212, 0.1));
             border: 1px solid var(--card-border);
@@ -370,10 +358,10 @@
 </head>
 <body>
 
-    <canvas id="ascii-canvas"></canvas>
-
+    <!-- Navbar -->
     <nav>
-        <div class="logo-3d-swap" id="logo3d" dir="ltr">
+        <!-- شعار الموقع بتأثير 3D Letter Swap التلقائي كل 3 ثواني -->
+        <div class="logo-3d-swap" dir="ltr">
             <span class="char-wrapper"><span class="char-inner">t</span></span>
             <span class="char-wrapper"><span class="char-inner">a</span></span>
             <span class="char-wrapper"><span class="char-inner">s</span></span>
@@ -395,6 +383,7 @@
         <a href="https://instagram.com/tasmematweb" target="_blank" class="nav-btn">اطلب الآن</a>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero">
         <div class="badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -408,6 +397,7 @@
         </div>
     </section>
 
+    <!-- Interface Preview -->
     <div class="preview-wrapper">
         <div class="preview-card">
             <div class="window-header">
@@ -423,6 +413,7 @@
         </div>
     </div>
 
+    <!-- Services Grid -->
     <section class="features-section" id="features">
         <div class="section-header">
             <h2>خدماتنا ومميزاتنا</h2>
@@ -430,6 +421,7 @@
         </div>
 
         <div class="grid">
+            <!-- Card 1 -->
             <div class="card">
                 <div class="icon-box">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -438,6 +430,7 @@
                 <p>تطوير مواقع الويب والتطبيقات باستخدام أحدث التقنيات البرمجية لتضمن سرعة التحميل وتجربة مستخدم سلسة.</p>
             </div>
 
+            <!-- Card 2 -->
             <div class="card">
                 <div class="icon-box">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
@@ -446,6 +439,7 @@
                 <p>مهما كانت فكرة مشروعك معقدة أو مخصصة، نملك الخبرة البرمجية لتحويلها إلى واقع ملموس وبأعلى معايير الجودة.</p>
             </div>
 
+            <!-- Card 3 -->
             <div class="card">
                 <div class="icon-box">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -454,6 +448,7 @@
                 <p>نلتزم بجدول زمني صارم لتسليم المشروع في أسرع وقت ممكن دون التأثير على كفاءة وجودة الكود البرمجي.</p>
             </div>
 
+            <!-- Card 4 -->
             <div class="card">
                 <div class="icon-box">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -464,128 +459,12 @@
         </div>
     </section>
 
+    <!-- CTA Footer Banner -->
     <section class="cta-banner" id="contact">
         <h2>جاهز لبدء مشروعك اليوم؟</h2>
         <p style="color: var(--text-muted); margin-bottom: 25px;">تواصل معنا الآن للحصول على استشارة مجانية ومعاينة خطة تنفيذ فكرتك.</p>
         <a href="https://instagram.com/tasmematweb" target="_blank" class="btn-primary">تواصل عبر إنستغرام @tasmematweb</a>
     </section>
 
-    <script>
-        // 1. تشغيل المحاكاة المائية خلف الموقع
-        const canvas = document.getElementById('ascii-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let width, height, cols, rows;
-        const charW = 10, charH = 16;
-        let buffer1 = [], buffer2 = [];
-        const damping = 0.95;
-
-        const glyphs = "·.,:;-~=+*%#@";
-        const passage = "tasmematweb create your future web development SaaS digital apps responsive design ";
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            cols = Math.ceil(width / charW);
-            rows = Math.ceil(height / charH);
-            
-            const size = cols * rows;
-            buffer1 = new Float32Array(size);
-            buffer2 = new Float32Array(size);
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        function triggerRipple(x, y, radius = 4, strength = 5) {
-            const cx = Math.floor(x / charW);
-            const cy = Math.floor(y / charH);
-
-            for (let dy = -radius; dy <= radius; dy++) {
-                for (let dx = -radius; dx <= radius; dx++) {
-                    const rx = cx + dx;
-                    const ry = cy + dy;
-                    if (rx >= 0 && rx < cols && ry >= 0 && ry < rows) {
-                        if (dx * dx + dy * dy <= radius * radius) {
-                            buffer1[ry * cols + rx] += strength;
-                        }
-                    }
-                }
-            }
-        }
-
-        window.addEventListener('pointermove', (e) => triggerRipple(e.clientX, e.clientY, 3, 2.5));
-        window.addEventListener('pointerdown', (e) => triggerRipple(e.clientX, e.clientY, 6, 8));
-        window.addEventListener('touchmove', (e) => {
-            if (e.touches && e.touches[0]) triggerRipple(e.touches[0].clientX, e.touches[0].clientY, 4, 3.5);
-        });
-
-        function updateSimulation() {
-            for (let y = 1; y < rows - 1; y++) {
-                for (let x = 1; x < cols - 1; x++) {
-                    const idx = y * cols + x;
-                    buffer2[idx] = (
-                        buffer1[idx - 1] +
-                        buffer1[idx + 1] +
-                        buffer1[idx - cols] +
-                        buffer1[idx + cols]
-                    ) / 2 - buffer2[idx];
-                    buffer2[idx] *= damping;
-                }
-            }
-            const temp = buffer1;
-            buffer1 = buffer2;
-            buffer2 = temp;
-        }
-
-        function render() {
-            ctx.fillStyle = "#07040d";
-            ctx.fillRect(0, 0, width, height);
-
-            ctx.font = '12px "Fira Code", monospace';
-
-            let passageIdx = 0;
-            for (let y = 0; y < rows; y++) {
-                for (let x = 0; x < cols; x++) {
-                    const idx = y * cols + x;
-                    const val = buffer1[idx];
-                    const absVal = Math.abs(val);
-
-                    let char = passage[passageIdx % passage.length];
-                    passageIdx++;
-
-                    if (absVal > 0.08) {
-                        const gIdx = Math.min(glyphs.length - 1, Math.floor(absVal * (glyphs.length - 1)));
-                        char = glyphs[gIdx];
-
-                        const alpha = Math.min(1, absVal * 0.85);
-                        if (val > 0.4) {
-                            ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-                        } else {
-                            ctx.fillStyle = `rgba(168, 85, 247, ${alpha})`;
-                        }
-                    } else {
-                        ctx.fillStyle = "rgba(168, 85, 247, 0.12)";
-                    }
-
-                    ctx.fillText(char, x * charW, y * charH + 12);
-                }
-            }
-        }
-
-        function loop() {
-            updateSimulation();
-            render();
-            requestAnimationFrame(loop);
-        }
-        loop();
-
-        // 2. تفعيل حركة 3D Letter Swap للشعار عند ضغط شاشة الموبايل
-        const logo = document.getElementById('logo3d');
-        logo.addEventListener('click', () => {
-            logo.classList.add('active');
-            setTimeout(() => logo.classList.remove('active'), 1200);
-        });
-    </script>
 </body>
 </html>
