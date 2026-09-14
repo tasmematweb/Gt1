@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High-Performance Luxury Neon</title>
+    <title>Frameless High-Performance Neon</title>
     <style>
         * {
             margin: 0;
@@ -17,38 +17,15 @@
             overflow-x: hidden;
             font-family: system-ui, -apple-system, sans-serif;
             position: relative;
-            color: #0f172a;
         }
 
-        .section-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            background: rgba(0, 210, 255, 0.08);
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #0088cc;
-            margin-bottom: 15px;
-        }
-
-        .badge-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #ffb700;
-            border-radius: 50%;
-        }
-
-        /* تسريع العتاد للأقسام الرئيسية */
+        /* تسريع عتاد الرسوميات للأقسام العائمة */
         .hanging-wrapper, .archer-section, .chart-section {
             will-change: transform;
-            contain: content;
+            contain: layout style;
         }
 
-        /* ---------------- 1. الساعة المعلقة ---------------- */
+        /* ---------------- 1. الساعة المعلقة (بدون إطار) ---------------- */
         .hanging-wrapper {
             position: absolute;
             top: 50vh;
@@ -59,7 +36,7 @@
             align-items: center;
             z-index: 10;
             width: 90%;
-            max-width: 520px;
+            max-width: 460px;
         }
 
         .wall-nail {
@@ -78,40 +55,20 @@
             background: linear-gradient(to bottom, #ffb700, #00d2ff);
         }
 
-        .clock-frame-box {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border: clamp(2px, 0.5vw, 3px) solid #00d2ff;
-            border-radius: clamp(24px, 4vw, 36px);
-            padding: clamp(20px, 4vw, 35px);
-            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.12);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
         .clock-container {
             width: 100%;
-            max-width: 440px;
             aspect-ratio: 1 / 1;
         }
 
-        /* ---------------- 2. قسم الرامي ---------------- */
+        /* ---------------- 2. قسم الرامي (بدون إطار) ---------------- */
         .archer-section {
             position: absolute;
             top: 200vh;
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
-            max-width: 980px;
-            background: rgba(255, 255, 255, 0.95);
-            border: clamp(2px, 0.5vw, 3px) solid #00d2ff;
-            border-radius: clamp(24px, 4vw, 36px);
-            padding: clamp(18px, 3vw, 30px);
-            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.12);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            max-width: 950px;
+            z-index: 10;
         }
 
         .archer-container {
@@ -119,22 +76,15 @@
             aspect-ratio: 800 / 400;
         }
 
-        /* ---------------- 3. قسم الرسم البياني ---------------- */
+        /* ---------------- 3. قسم الرسم البياني (بدون إطار) ---------------- */
         .chart-section {
             position: absolute;
             top: 360vh;
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
-            max-width: 1000px;
-            background: rgba(255, 255, 255, 0.95);
-            border: clamp(2px, 0.5vw, 3px) solid #00d2ff;
-            border-radius: clamp(24px, 4vw, 36px);
-            padding: clamp(18px, 3vw, 30px);
-            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.12);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            max-width: 980px;
+            z-index: 10;
         }
 
         .chart-container {
@@ -148,7 +98,7 @@
             overflow: visible !important;
         }
 
-        /* تحسين التوهج خفيف الأداء */
+        /* ظلال نيون خفيفة جداً وعالية الأداء */
         .neon-blue { filter: drop-shadow(0 0 4px #00d2ff); }
         .neon-gold { filter: drop-shadow(0 0 4px #ffb700); }
 
@@ -161,45 +111,41 @@
 </head>
 <body>
 
-    <!-- 1. الساعة -->
+    <!-- 1. الساعة العائمة مع المسمار والخيط -->
     <div class="hanging-wrapper">
         <div class="wall-nail"></div>
         <div class="hanging-string"></div>
-        <div class="clock-frame-box">
-            <div class="section-badge"><span class="badge-dot"></span> precision timepiece</div>
-            <div class="clock-container">
-                <svg viewBox="-70 -70 440 440">
-                    <defs>
-                        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#ffe600" />
-                            <stop offset="100%" stop-color="#ff9900" />
-                        </linearGradient>
-                        <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#00ffff" />
-                            <stop offset="100%" stop-color="#0088ff" />
-                        </linearGradient>
-                    </defs>
+        <div class="clock-container">
+            <svg viewBox="-70 -70 440 440">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffe600" />
+                        <stop offset="100%" stop-color="#ff9900" />
+                    </linearGradient>
+                    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00ffff" />
+                        <stop offset="100%" stop-color="#0088ff" />
+                    </linearGradient>
+                </defs>
 
-                    <circle cx="150" cy="150" r="142" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" opacity="0.6" />
-                    <circle cx="150" cy="150" r="135" fill="none" stroke="url(#blueGrad)" stroke-width="3.5" class="neon-blue" />
-                    <g id="ticks" stroke-linecap="round"></g>
+                <circle cx="150" cy="150" r="142" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" opacity="0.6" />
+                <circle cx="150" cy="150" r="135" fill="none" stroke="url(#blueGrad)" stroke-width="3.5" class="neon-blue" />
+                <g id="ticks" stroke-linecap="round"></g>
 
-                    <g id="hour-hand" transform="rotate(295 150 150)">
-                        <polygon points="146,150 154,150 151,80 149,80" fill="url(#goldGrad)" class="neon-gold" />
-                    </g>
-                    <g id="minute-hand" transform="rotate(355 150 150)">
-                        <line x1="150" y1="185" x2="150" y2="35" stroke="url(#blueGrad)" stroke-width="4.5" stroke-linecap="round" class="neon-blue" />
-                    </g>
-                    <circle cx="150" cy="150" r="8" fill="#00d2ff" />
-                    <circle cx="150" cy="150" r="4" fill="#ffe600" />
-                </svg>
-            </div>
+                <g id="hour-hand" transform="rotate(295 150 150)">
+                    <polygon points="146,150 154,150 151,80 149,80" fill="url(#goldGrad)" class="neon-gold" />
+                </g>
+                <g id="minute-hand" transform="rotate(355 150 150)">
+                    <line x1="150" y1="185" x2="150" y2="35" stroke="url(#blueGrad)" stroke-width="4.5" stroke-linecap="round" class="neon-blue" />
+                </g>
+                <circle cx="150" cy="150" r="8" fill="#00d2ff" />
+                <circle cx="150" cy="150" r="4" fill="#ffe600" />
+            </svg>
         </div>
     </div>
 
-    <!-- 2. الرامي -->
+    <!-- 2. الرامي العائم -->
     <div class="archer-section">
-        <div class="section-badge"><span class="badge-dot"></span> accuracy & precision</div>
         <div class="archer-container">
             <svg viewBox="0 0 800 400">
                 <line x1="30" y1="340" x2="770" y2="340" stroke="url(#blueGrad)" stroke-width="3.5" stroke-linecap="round" />
@@ -249,9 +195,8 @@
         </div>
     </div>
 
-    <!-- 3. الرسم البياني -->
+    <!-- 3. الرسم البياني العائم -->
     <div class="chart-section">
-        <div class="section-badge"><span class="badge-dot"></span> exponential growth</div>
         <div class="chart-container">
             <svg viewBox="0 0 800 420">
                 <defs>
@@ -282,7 +227,6 @@
     </div>
 
     <script>
-        // رسم الشُرط مرة واحدة
         const ticksGroup = document.getElementById('ticks');
         for (let i = 0; i < 60; i++) {
             const angle = i * 6;
@@ -319,7 +263,6 @@
         chartPath.style.strokeDasharray = totalChartLength;
         chartPath.style.strokeDashoffset = totalChartLength;
 
-        // تخزين المواضع لتجنب Layout Thrashing
         let archerTop = 0, chartTop = 0, winHeight = window.innerHeight;
 
         function updatePositions() {
@@ -343,11 +286,9 @@
             const maxScroll = document.documentElement.scrollHeight - winHeight;
             const scrollFraction = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
 
-            // 1. الساعة
             minuteHand.setAttribute('transform', `rotate(${355 + (scrollFraction * 4320)} 150 150)`);
             hourHand.setAttribute('transform', `rotate(${295 + (scrollFraction * 360)} 150 150)`);
 
-            // 2. الرامي (بدون قراءة DOM داخل الحلقة)
             const archerStart = archerTop - winHeight * 0.85;
             const archerEnd = archerTop - winHeight * 0.15;
             let rawArcherP = (scrollTop - archerStart) / (archerEnd - archerStart);
@@ -391,7 +332,6 @@
             bowString.setAttribute('d', `M 175,120 L ${175 - currentBowPull},185 L 175,250`);
             targetBoard.setAttribute('transform', targetHitImpact ? `translate(6, 0)` : `translate(0, 0)`);
 
-            // 3. الرسم البياني (بدون قراءة DOM داخل الحلقة)
             const chartStart = chartTop - winHeight * 0.85;
             const chartEnd = chartTop - winHeight * 0.20;
             let rawChartP = (scrollTop - chartStart) / (chartEnd - chartStart);
