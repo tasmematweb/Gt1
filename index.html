@@ -33,7 +33,7 @@
         }
 
         /* ----------------------------------------------------
-           1. الخلفية ثلاثية الأبعاد والأضواء الانسيابية
+           1. خلفية تلاشي البداية والأضواء الانسيابية
         ---------------------------------------------------- */
         .bg-fluid-container {
             position: fixed;
@@ -44,6 +44,12 @@
             z-index: -1;
             overflow: hidden;
             pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+
+        body.fade-in-start .bg-fluid-container {
+            opacity: 1;
         }
 
         .glow-orb {
@@ -96,7 +102,7 @@
         }
 
         /* ----------------------------------------------------
-           2. حركة الشعار (البقاء 5 ثوانٍ بالمنتصف ثم الانتقال لليمين)
+           2. بداية التلاشي وظهور الكلمة لمدة 3 ثوانٍ بالمنتصف
         ---------------------------------------------------- */
         .logo-intro-wrapper {
             position: fixed;
@@ -104,11 +110,17 @@
             left: 50%;
             transform: translate(-50%, -50%) scale(1.6);
             z-index: 10000;
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transition: opacity 0.8s ease, top 1s cubic-bezier(0.16, 1, 0.3, 1), right 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
         }
 
-        /* استقرار الشعار في الجانب الأيمن من الهيدر (عكس أزرار الهيدر) */
+        /* ظهور الكلمة بالتلاشي في المنتصف */
+        .logo-intro-wrapper.show-word {
+            opacity: 1;
+        }
+
+        /* الانتقال بعد 3 ثوانٍ لليمين (عكس زر أطلب الآن) */
         body.loaded .logo-intro-wrapper {
             top: 25px;
             right: 8%;
@@ -159,7 +171,7 @@
         .char-wrapper:nth-child(11) .char-inner { animation-delay: 0.44s; }
 
         /* ----------------------------------------------------
-           3. الشريط العلوي (Navbar - الأزرار والروابط في يسار الشاشة)
+           3. الشريط العلوي (Navbar - الأزرار يسار الشاشة)
         ---------------------------------------------------- */
         nav {
             position: fixed;
@@ -168,7 +180,7 @@
             right: 0;
             height: 85px;
             display: flex;
-            justify-content: flex-end; /* يضع الأزرار جهة اليسار في نظام RTL */
+            justify-content: flex-end;
             align-items: center;
             padding: 0 8%;
             background: rgba(6, 3, 14, 0.85);
@@ -176,7 +188,7 @@
             border-bottom: 1px solid rgba(168, 85, 247, 0.15);
             z-index: 999;
             opacity: 0;
-            transition: opacity 0.8s ease 0.5s;
+            transition: opacity 0.8s ease;
         }
 
         body.loaded nav {
@@ -189,7 +201,7 @@
             gap: 28px;
             opacity: 0;
             transform: translateY(-10px);
-            transition: all 0.6s ease 0.8s;
+            transition: all 0.6s ease 0.3s;
         }
 
         body.loaded .nav-content {
@@ -230,7 +242,7 @@
         }
 
         /* ----------------------------------------------------
-           4. ظهور المحتوى بالتتابع بعد انقضاء 5 ثوانٍ
+           4. ظهور محتوى الصفحة بالتتابع بعد انتهاء الـ 3 ثوانٍ
         ---------------------------------------------------- */
         .anim-item {
             opacity: 0;
@@ -238,11 +250,11 @@
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        body.loaded .anim-1 { opacity: 1; transform: translateY(0); transition-delay: 0.65s; }
-        body.loaded .anim-2 { opacity: 1; transform: translateY(0); transition-delay: 0.80s; }
-        body.loaded .anim-3 { opacity: 1; transform: translateY(0); transition-delay: 0.95s; }
-        body.loaded .anim-4 { opacity: 1; transform: translateY(0); transition-delay: 1.10s; }
-        body.loaded .anim-5 { opacity: 1; transform: translateY(0); transition-delay: 1.25s; }
+        body.loaded .anim-1 { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+        body.loaded .anim-2 { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
+        body.loaded .anim-3 { opacity: 1; transform: translateY(0); transition-delay: 0.6s; }
+        body.loaded .anim-4 { opacity: 1; transform: translateY(0); transition-delay: 0.75s; }
+        body.loaded .anim-5 { opacity: 1; transform: translateY(0); transition-delay: 0.9s; }
 
         /* ----------------------------------------------------
            5. Hero Section
@@ -333,7 +345,7 @@
         }
 
         /* ----------------------------------------------------
-           6. شبكة البطاقات الداكنة المضاءة بالنيون
+           6. البطاقات
         ---------------------------------------------------- */
         .features-section {
             padding: 60px 8% 100px;
@@ -446,8 +458,8 @@
 </head>
 <body>
 
-    <!-- الشعار الذي يظهر في المنتصف لمدة 5 ثوانٍ ثم ينتقل لليمين -->
-    <div class="logo-intro-wrapper">
+    <!-- الشعار في بداية الموقع -->
+    <div class="logo-intro-wrapper" id="logoIntro">
         <div class="logo-3d-swap">
             <span class="char-wrapper"><span class="char-inner">t</span></span>
             <span class="char-wrapper"><span class="char-inner">a</span></span>
@@ -515,7 +527,7 @@
             </div>
         </section>
 
-        <!-- شبكة البطاقات الداكنة المضاءة بالنيون -->
+        <!-- شبكة البطاقات -->
         <section class="features-section anim-item anim-5" id="services">
             <div class="section-header">
                 <h2>خدماتنا ومميزاتنا</h2>
@@ -571,11 +583,19 @@
     </main>
 
     <script>
-        // تأخير انطلاق حركة الموقع 5 ثوانٍ كاملة
         window.addEventListener('DOMContentLoaded', () => {
+            const logo = document.getElementById('logoIntro');
+
+            // 1. تلاشي ظهور الكلمة والخلفية في منتصف الشاشة فور التحميل
+            setTimeout(() => {
+                document.body.classList.add('fade-in-start');
+                logo.classList.add('show-word');
+            }, 100);
+
+            // 2. الكلمة تظل مستمرة في المنتصف لمدة 3 ثوانٍ، ثم تنتقل لليمين ويبدأ الموقع
             setTimeout(() => {
                 document.body.classList.add('loaded');
-            }, 5000);
+            }, 3100);
         });
     </script>
 </body>
