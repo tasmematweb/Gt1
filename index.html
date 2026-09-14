@@ -33,7 +33,7 @@
         }
 
         /* ----------------------------------------------------
-           1. الخلفية ثلاثية الأبعاد والأضواء الانسيابية (الهوية الأصلية)
+           1. الخلفية ثلاثية الأبعاد والأضواء الانسيابية
         ---------------------------------------------------- */
         .bg-fluid-container {
             position: fixed;
@@ -96,7 +96,7 @@
         }
 
         /* ----------------------------------------------------
-           2. حركة انتقال الشعار من منتصف الشاشة للهيدر
+           2. حركة الشعار (البقاء 5 ثوانٍ بالمنتصف ثم الانتقال لليمين)
         ---------------------------------------------------- */
         .logo-intro-wrapper {
             position: fixed;
@@ -108,9 +108,11 @@
             pointer-events: none;
         }
 
+        /* استقرار الشعار في الجانب الأيمن من الهيدر (عكس أزرار الهيدر) */
         body.loaded .logo-intro-wrapper {
             top: 25px;
-            left: 8%;
+            right: 8%;
+            left: auto;
             transform: translate(0, 0) scale(1);
         }
 
@@ -157,7 +159,7 @@
         .char-wrapper:nth-child(11) .char-inner { animation-delay: 0.44s; }
 
         /* ----------------------------------------------------
-           3. الشريط العلوي (Navbar)
+           3. الشريط العلوي (Navbar - الأزرار والروابط في يسار الشاشة)
         ---------------------------------------------------- */
         nav {
             position: fixed;
@@ -166,7 +168,7 @@
             right: 0;
             height: 85px;
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-end; /* يضع الأزرار جهة اليسار في نظام RTL */
             align-items: center;
             padding: 0 8%;
             background: rgba(6, 3, 14, 0.85);
@@ -228,7 +230,7 @@
         }
 
         /* ----------------------------------------------------
-           4. ظهور المحتوى بالتتابع (Staggered Animation)
+           4. ظهور المحتوى بالتتابع بعد انقضاء 5 ثوانٍ
         ---------------------------------------------------- */
         .anim-item {
             opacity: 0;
@@ -438,13 +440,13 @@
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hero { padding-top: 140px; }
-            body.loaded .logo-intro-wrapper { top: 20px; left: 5%; transform: scale(0.85); }
+            body.loaded .logo-intro-wrapper { top: 20px; right: 5%; left: auto; transform: scale(0.85); }
         }
     </style>
 </head>
 <body>
 
-    <!-- الشعار المتحرك (يبدأ في المنتصف ويتجه للهيدر) -->
+    <!-- الشعار الذي يظهر في المنتصف لمدة 5 ثوانٍ ثم ينتقل لليمين -->
     <div class="logo-intro-wrapper">
         <div class="logo-3d-swap">
             <span class="char-wrapper"><span class="char-inner">t</span></span>
@@ -461,7 +463,7 @@
         </div>
     </div>
 
-    <!-- الخلفية ثلاثية الأبعاد والأضواء الانسيابية -->
+    <!-- الخلفية ثلاثية الأبعاد -->
     <div class="bg-fluid-container">
         <div class="glow-orb glow-1"></div>
         <div class="glow-orb glow-2"></div>
@@ -569,10 +571,11 @@
     </main>
 
     <script>
+        // تأخير انطلاق حركة الموقع 5 ثوانٍ كاملة
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.body.classList.add('loaded');
-            }, 300);
+            }, 5000);
         });
     </script>
 </body>
