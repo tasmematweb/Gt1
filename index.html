@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frameless High-Performance Neon</title>
+    <title>tasmematweb | نُنشئ لك مستقبلك</title>
     <style>
         * {
             margin: 0;
@@ -12,23 +12,138 @@
         }
 
         body {
-            background: #ffffff radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.05) 0%, rgba(255, 183, 0, 0.03) 50%, #ffffff 100%);
-            height: 550vh;
+            background: #070414 radial-gradient(circle at 50% 15%, #1a0b36 0%, #070414 70%);
+            height: 600vh;
             overflow-x: hidden;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
             position: relative;
         }
 
-        /* تسريع عتاد الرسوميات للأقسام العائمة */
-        .hanging-wrapper, .archer-section, .chart-section {
-            will-change: transform;
+        /* تسريع العتاد والتسريع الرسومي */
+        .hero-header, .features-grid, .hanging-wrapper, .archer-section, .chart-section {
+            will-change: transform, opacity;
             contain: layout style;
         }
 
-        /* ---------------- 1. الساعة المعلقة (بدون إطار) ---------------- */
+        /* ---------------- 0. الهيدر والبطل (Hero & Brand) ---------------- */
+        .hero-header {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 900px;
+            text-align: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .brand-name {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffffff 30%, #b026ff 70%, #00d2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(176, 38, 255, 0.4);
+            margin-bottom: 8px;
+        }
+
+        .hero-slogan {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            pointer-events: auto;
+        }
+
+        .btn-neon-primary {
+            padding: 12px 32px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, #b026ff, #7928ca);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.6);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-neon-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(176, 38, 255, 0.9);
+        }
+
+        .btn-neon-secondary {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #00d2ff;
+            background: rgba(0, 210, 255, 0.05);
+            border: 2px solid #00d2ff;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+            transition: transform 0.2s ease, background 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-neon-secondary:hover {
+            transform: scale(1.05);
+            background: rgba(0, 210, 255, 0.15);
+        }
+
+        /* ---------------- شبكة المميزات الأربعة (Floating Features) ---------------- */
+        .features-grid {
+            position: absolute;
+            top: 105vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            z-index: 20;
+        }
+
+        .feature-card {
+            background: rgba(20, 10, 40, 0.6);
+            border: 1px solid rgba(176, 38, 255, 0.4);
+            border-radius: 20px;
+            padding: 22px 15px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+        }
+
+        /* ---------------- 1. الساعة المعلقة (التنفيذ في أسرع وقت) ---------------- */
         .hanging-wrapper {
             position: absolute;
-            top: 50vh;
+            top: 210vh;
             left: 50%;
             transform: translate(-50%, -50%);
             display: flex;
@@ -36,23 +151,36 @@
             align-items: center;
             z-index: 10;
             width: 90%;
-            max-width: 460px;
+            max-width: 440px;
+        }
+
+        .section-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffb700;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(255, 183, 0, 0.6);
+            background: rgba(255, 183, 0, 0.1);
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 183, 0, 0.4);
         }
 
         .wall-nail {
-            width: clamp(14px, 2.5vw, 20px);
-            height: clamp(14px, 2.5vw, 20px);
+            width: 16px;
+            height: 16px;
             background: #ffb700;
             border-radius: 50%;
-            box-shadow: 0 0 10px #ffb700;
+            box-shadow: 0 0 12px #ffb700;
             margin-bottom: -2px;
             z-index: 2;
         }
 
         .hanging-string {
             width: 3px;
-            height: clamp(40px, 8vh, 70px);
-            background: linear-gradient(to bottom, #ffb700, #00d2ff);
+            height: 60px;
+            background: linear-gradient(to bottom, #ffb700, #b026ff);
         }
 
         .clock-container {
@@ -60,15 +188,16 @@
             aspect-ratio: 1 / 1;
         }
 
-        /* ---------------- 2. قسم الرامي (بدون إطار) ---------------- */
+        /* ---------------- 2. قسم الرامي (دقة تنفيذ أي فكرة) ---------------- */
         .archer-section {
             position: absolute;
-            top: 200vh;
+            top: 360vh;
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
             max-width: 950px;
             z-index: 10;
+            text-align: center;
         }
 
         .archer-container {
@@ -76,15 +205,16 @@
             aspect-ratio: 800 / 400;
         }
 
-        /* ---------------- 3. قسم الرسم البياني (بدون إطار) ---------------- */
+        /* ---------------- 3. قسم الرسم البياني (نمو وتطوير المواقع) ---------------- */
         .chart-section {
             position: absolute;
-            top: 360vh;
+            top: 500vh;
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
             max-width: 980px;
             z-index: 10;
+            text-align: center;
         }
 
         .chart-container {
@@ -98,37 +228,76 @@
             overflow: visible !important;
         }
 
-        /* ظلال نيون خفيفة جداً وعالية الأداء */
-        .neon-blue { filter: drop-shadow(0 0 4px #00d2ff); }
-        .neon-gold { filter: drop-shadow(0 0 4px #ffb700); }
+        /* ظلال النيون */
+        .neon-purple { filter: drop-shadow(0 0 6px #b026ff); }
+        .neon-blue { filter: drop-shadow(0 0 6px #00d2ff); }
+        .neon-gold { filter: drop-shadow(0 0 6px #ffb700); }
 
         @media (max-width: 600px) {
-            body { height: 480vh; }
-            .archer-section { top: 170vh; }
-            .chart-section { top: 310vh; }
+            body { height: 550vh; }
+            .hero-header { top: 25px; }
+            .features-grid { top: 95vh; grid-template-columns: 1fr 1fr; }
+            .hanging-wrapper { top: 195vh; }
+            .archer-section { top: 330vh; }
+            .chart-section { top: 460vh; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. الساعة العائمة مع المسمار والخيط -->
+    <!-- 0. ترويسة الشركة واسم العلامة التجاريّة -->
+    <header class="hero-header">
+        <h1 class="brand-name">tasmematweb</h1>
+        <p class="hero-slogan">نُنشئ لك مستقبلك</p>
+        <div class="cta-group">
+            <a href="#contact" class="btn-neon-primary">اطلب الآن</a>
+            <a href="#features" class="btn-neon-secondary">اكتشف المزيد</a>
+        </div>
+    </header>
+
+    <!-- بطاقات الخدمات الأربعة من التصميم -->
+    <div class="features-grid" id="features">
+        <div class="feature-card">
+            <span class="feature-icon">💻</span>
+            <div class="feature-title">إنشاء مواقع وتطبيقات</div>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">💡</span>
+            <div class="feature-title">تنفيذ أي فكرة</div>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <div class="feature-title">التنفيذ في أسرع وقت</div>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🛡️</span>
+            <div class="feature-title">الدفع بعد الاستلام</div>
+        </div>
+    </div>
+
+    <!-- 1. الساعة العائمة (التنفيذ في أسرع وقت) -->
     <div class="hanging-wrapper">
+        <span class="section-label">⚡ السرعة والتسليم القياسي</span>
         <div class="wall-nail"></div>
         <div class="hanging-string"></div>
         <div class="clock-container">
             <svg viewBox="-70 -70 440 440">
                 <defs>
-                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#ffe600" />
-                        <stop offset="100%" stop-color="#ff9900" />
+                    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#b026ff" />
+                        <stop offset="100%" stop-color="#7928ca" />
                     </linearGradient>
                     <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#00ffff" />
                         <stop offset="100%" stop-color="#0088ff" />
                     </linearGradient>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffe600" />
+                        <stop offset="100%" stop-color="#ff9900" />
+                    </linearGradient>
                 </defs>
 
-                <circle cx="150" cy="150" r="142" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" opacity="0.6" />
+                <circle cx="150" cy="150" r="142" fill="none" stroke="url(#purpleGrad)" stroke-width="2" opacity="0.7" />
                 <circle cx="150" cy="150" r="135" fill="none" stroke="url(#blueGrad)" stroke-width="3.5" class="neon-blue" />
                 <g id="ticks" stroke-linecap="round"></g>
 
@@ -136,7 +305,7 @@
                     <polygon points="146,150 154,150 151,80 149,80" fill="url(#goldGrad)" class="neon-gold" />
                 </g>
                 <g id="minute-hand" transform="rotate(355 150 150)">
-                    <line x1="150" y1="185" x2="150" y2="35" stroke="url(#blueGrad)" stroke-width="4.5" stroke-linecap="round" class="neon-blue" />
+                    <line x1="150" y1="185" x2="150" y2="35" stroke="url(#purpleGrad)" stroke-width="5" stroke-linecap="round" class="neon-purple" />
                 </g>
                 <circle cx="150" cy="150" r="8" fill="#00d2ff" />
                 <circle cx="150" cy="150" r="4" fill="#ffe600" />
@@ -144,20 +313,21 @@
         </div>
     </div>
 
-    <!-- 2. الرامي العائم -->
+    <!-- 2. الرامي العائم (تنفيذ ودقة الأفكار) -->
     <div class="archer-section">
+        <span class="section-label">🎯 الإتقان ودقة التنفيذ</span>
         <div class="archer-container">
             <svg viewBox="0 0 800 400">
-                <line x1="30" y1="340" x2="770" y2="340" stroke="url(#blueGrad)" stroke-width="3.5" stroke-linecap="round" />
+                <line x1="30" y1="340" x2="770" y2="340" stroke="url(#purpleGrad)" stroke-width="3.5" stroke-linecap="round" />
 
-                <g id="stickman" class="neon-blue">
+                <g id="stickman" class="neon-purple">
                     <g id="quiver-group">
-                        <path d="M 98,170 L 112,230 L 102,232 L 88,172 Z" fill="rgba(255, 183, 0, 0.2)" stroke="#ffb700" stroke-width="2" />
+                        <path d="M 98,170 L 112,230 L 102,232 L 88,172 Z" fill="rgba(176, 38, 255, 0.2)" stroke="#b026ff" stroke-width="2" />
                         <line id="q-arrow-3" x1="91" y1="171" x2="82" y2="150" stroke="#ffb700" stroke-width="3" stroke-linecap="round" />
                         <line id="q-arrow-2" x1="95" y1="171" x2="89" y2="145" stroke="#ffb700" stroke-width="3" stroke-linecap="round" />
                         <line id="q-arrow-1" x1="99" y1="171" x2="96" y2="140" stroke="#ffb700" stroke-width="3" stroke-linecap="round" />
                     </g>
-                    <circle cx="120" cy="140" r="22" fill="#00d2ff" stroke="url(#goldGrad)" stroke-width="2.5" />
+                    <circle cx="120" cy="140" r="22" fill="#00d2ff" stroke="url(#purpleGrad)" stroke-width="2.5" />
                     <line x1="95" y1="135" x2="145" y2="135" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
                     <line x1="120" y1="162" x2="120" y2="250" stroke="#00d2ff" stroke-width="5" stroke-linecap="round" />
                     <line x1="120" y1="250" x2="90" y2="340" stroke="#00d2ff" stroke-width="5" stroke-linecap="round" />
@@ -183,11 +353,11 @@
                 </g>
 
                 <g id="target-board">
-                    <line x1="680" y1="220" x2="630" y2="340" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" />
-                    <line x1="680" y1="220" x2="730" y2="340" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" />
-                    <line x1="680" y1="220" x2="680" y2="340" stroke="#00d2ff" stroke-width="3" stroke-linecap="round" />
+                    <line x1="680" y1="220" x2="630" y2="340" stroke="#b026ff" stroke-width="4" stroke-linecap="round" />
+                    <line x1="680" y1="220" x2="730" y2="340" stroke="#b026ff" stroke-width="4" stroke-linecap="round" />
+                    <line x1="680" y1="220" x2="680" y2="340" stroke="#b026ff" stroke-width="3" stroke-linecap="round" />
                     <circle cx="680" cy="185" r="55" fill="none" stroke="#00d2ff" stroke-width="3.5" stroke-dasharray="6,4" />
-                    <circle cx="680" cy="185" r="38" fill="none" stroke="#00d2ff" stroke-width="3" />
+                    <circle cx="680" cy="185" r="38" fill="none" stroke="#b026ff" stroke-width="3" />
                     <circle cx="680" cy="185" r="22" fill="none" stroke="#ffb700" stroke-width="3" />
                     <circle cx="680" cy="185" r="9" fill="url(#goldGrad)" />
                 </g>
@@ -195,21 +365,23 @@
         </div>
     </div>
 
-    <!-- 3. الرسم البياني العائم -->
-    <div class="chart-section">
+    <!-- 3. الرسم البياني العائم (نمو وتطوير المشروعات) -->
+    <div class="chart-section" id="contact">
+        <span class="section-label">📈 نمو وتطوير تطبيقاتك ومواقعك</span>
         <div class="chart-container">
             <svg viewBox="0 0 800 420">
                 <defs>
                     <pattern id="lux-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0, 210, 255, 0.15)" stroke-width="1.2" />
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(176, 38, 255, 0.15)" stroke-width="1.2" />
                     </pattern>
                     <linearGradient id="chartLineGrad" x1="0%" y1="100%" x2="100%" y2="0%">
                         <stop offset="0%" stop-color="#00d2ff" />
+                        <stop offset="50%" stop-color="#b026ff" />
                         <stop offset="100%" stop-color="#ffb700" />
                     </linearGradient>
                 </defs>
 
-                <rect x="15" y="15" width="770" height="390" rx="20" fill="url(#lux-grid)" stroke="rgba(0, 210, 255, 0.4)" stroke-width="2" stroke-dasharray="8,6" />
+                <rect x="15" y="15" width="770" height="390" rx="20" fill="url(#lux-grid)" stroke="rgba(176, 38, 255, 0.3)" stroke-width="2" stroke-dasharray="8,6" />
 
                 <path id="chart-path" 
                       d="M 50 370 L 110 325 L 135 340 L 200 270 L 235 295 L 310 195 L 345 220 L 440 115 L 475 140 L 560 55 L 595 80 L 710 25" 
@@ -227,6 +399,7 @@
     </div>
 
     <script>
+        // رسم شُرط الساعة
         const ticksGroup = document.getElementById('ticks');
         for (let i = 0; i < 60; i++) {
             const angle = i * 6;
@@ -237,7 +410,7 @@
             line.setAttribute("x2", "150");
             line.setAttribute("y2", isMajor ? "33" : "26");
             line.setAttribute("stroke-width", isMajor ? "3.5" : "1.5");
-            line.setAttribute("stroke", isMajor ? "#ffb700" : "#00d2ff");
+            line.setAttribute("stroke", isMajor ? "#ffb700" : "#b026ff");
             line.setAttribute("transform", `rotate(${angle} 150 150)`);
             ticksGroup.appendChild(line);
         }
@@ -286,9 +459,11 @@
             const maxScroll = document.documentElement.scrollHeight - winHeight;
             const scrollFraction = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
 
+            // 1. حركة الساعة
             minuteHand.setAttribute('transform', `rotate(${355 + (scrollFraction * 4320)} 150 150)`);
             hourHand.setAttribute('transform', `rotate(${295 + (scrollFraction * 360)} 150 150)`);
 
+            // 2. حركة الرامي
             const archerStart = archerTop - winHeight * 0.85;
             const archerEnd = archerTop - winHeight * 0.15;
             let rawArcherP = (scrollTop - archerStart) / (archerEnd - archerStart);
@@ -332,6 +507,7 @@
             bowString.setAttribute('d', `M 175,120 L ${175 - currentBowPull},185 L 175,250`);
             targetBoard.setAttribute('transform', targetHitImpact ? `translate(6, 0)` : `translate(0, 0)`);
 
+            // 3. حركة الرسم البياني
             const chartStart = chartTop - winHeight * 0.85;
             const chartEnd = chartTop - winHeight * 0.20;
             let rawChartP = (scrollTop - chartStart) / (chartEnd - chartStart);
