@@ -714,8 +714,7 @@
         }
 
         /* ====================================================
-           البطاقة التي تحتوي صورة — الصورة كبيرة مع مسافة صغيرة
-           وزوايا مطابقة لزوايا الكرت (16px)
+           البطاقة التي تحتوي صورة — الزوايا المستديرة على الكرت
         ==================================================== */
         .wrap_card .card.has-image {
             padding: 3px !important;
@@ -725,6 +724,9 @@
             justify-content: center;
             cursor: pointer;
             text-decoration: none;
+            border-radius: 16px !important;
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            mask-image: radial-gradient(white, black);
         }
 
         .wrap_card .card.has-image img {
