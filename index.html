@@ -123,15 +123,15 @@
         .logo-swap-box {
             position: relative;
             display: inline-block;
-            height: 38px;
-            min-width: 260px;
+            height: 46px;
+            min-width: 300px;
         }
 
         .logo-arabic {
             position: absolute;
             top: 0; left: 50%;
             transform: translate3d(-50%, 0, 0);
-            font-size: 1.6rem;
+            font-size: 1.9rem;
             font-weight: 800;
             letter-spacing: -0.5px;
             white-space: nowrap;
@@ -150,7 +150,7 @@
             display: inline-flex;
             direction: ltr;
             cursor: pointer;
-            font-size: 1.6rem;
+            font-size: 1.9rem;
             font-weight: 800;
             letter-spacing: -0.5px;
             user-select: none;
@@ -165,7 +165,7 @@
         .char-wrapper {
             perspective: 800px;
             display: inline-block;
-            height: 38px;
+            height: 46px;
         }
 
         .char-inner {
@@ -649,25 +649,30 @@
             border-radius: 12px;
         }
 
-        /* الصورة تملأ الكرت بالكامل */
+        /* ====================================================
+           البطاقة التي تحتوي صورة — الصورة تملأ الكرت بالكامل
+           (إلغاء الإطار الداخلي تماماً عبر !important)
+        ==================================================== */
         .wrap_card .card.has-image .content {
-            background-color: transparent;
-            width: 100%;
-            height: 100%;
-            border-radius: 16px;
-            padding: 0;
+            background-color: transparent !important;
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            border-radius: 16px !important;
             cursor: zoom-in;
         }
 
         .wrap_card .card.has-image .content > img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-            border-radius: 16px;
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            display: block !important;
+            border-radius: 16px !important;
         }
 
         .wrap_card .content > span {
@@ -921,8 +926,8 @@
             .wrap_card .content > span { font-size: 240px; }
             .wrap_card .content > svg { width: 54px; height: 54px; }
 
-            .logo-swap-box { min-width: 210px; }
-            .logo-arabic, .logo-3d-swap { font-size: 1.3rem; }
+            .logo-swap-box { min-width: 240px; height: 40px; }
+            .logo-arabic, .logo-3d-swap { font-size: 1.5rem; }
 
             .lightbox-close { top: 14px; right: 14px; width: 40px; height: 40px; }
         }
