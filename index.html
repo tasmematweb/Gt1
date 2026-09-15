@@ -714,12 +714,14 @@
         }
 
         /* ====================================================
-           البطاقة التي تحتوي صورة — الصورة مباشرة بدون حاوية
+           البطاقة التي تحتوي صورة — مسافة على الحواف
         ==================================================== */
         .wrap_card .card.has-image {
-            padding: 0 !important;
+            padding: 10px !important;
             overflow: hidden !important;
             display: block !important;
+            cursor: pointer;
+            text-decoration: none;
         }
 
         .wrap_card .card.has-image img {
@@ -728,11 +730,9 @@
             object-fit: cover !important;
             object-position: center !important;
             display: block !important;
-            padding: 0 !important;
             margin: 0 !important;
             border: 0 !important;
-            border-radius: 16px;
-            cursor: zoom-in;
+            border-radius: 10px;
         }
 
         .wrap_card .card.is-front {
@@ -764,67 +764,6 @@
         }
         .wrap_card .card:nth-child(3) {
             --bg: radial-gradient(circle, #f0abfc 0%, #d946ef 40%, #86198f 100%);
-        }
-
-        /* ====================================================
-           الشاشة المنبثقة لعرض الصورة
-        ==================================================== */
-        .lightbox {
-            position: fixed;
-            inset: 0;
-            z-index: 20000;
-            background: rgba(3, 1, 8, 0.92);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.35s ease, visibility 0.35s ease;
-            padding: 24px;
-        }
-
-        .lightbox.is-open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .lightbox-img {
-            max-width: 92vw;
-            max-height: 88vh;
-            border-radius: 16px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9),
-                        0 0 60px rgba(168, 85, 247, 0.5);
-            transform: scale(0.92);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            display: block;
-        }
-
-        .lightbox.is-open .lightbox-img {
-            transform: scale(1);
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 22px;
-            right: 22px;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            border: 1px solid rgba(168, 85, 247, 0.5);
-            background: rgba(13, 8, 26, 0.9);
-            color: #fff;
-            font-size: 24px;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.25s ease, background 0.25s ease;
-        }
-
-        .lightbox-close:hover {
-            transform: scale(1.1);
-            background: rgba(168, 85, 247, 0.4);
         }
 
         .wrap_card .lines {
@@ -924,8 +863,6 @@
 
             .logo-swap-box { min-width: 240px; height: 40px; }
             .logo-arabic, .logo-3d-swap { font-size: 1.5rem; }
-
-            .lightbox-close { top: 14px; right: 14px; width: 40px; height: 40px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1043,9 +980,9 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="card is-right has-image">
-                        <img src="https://i.pinimg.com/736x/7d/b6/ba/7db6ba10d0ec2efe49757053b72062f6.jpg" alt="تصميم مشروع" loading="lazy" class="lightbox-trigger">
-                    </div>
+                    <a href="https://1akone.com" target="_blank" rel="noopener" class="card is-right has-image" aria-label="زيارة الموقع">
+                        <img src="https://i.pinimg.com/736x/7d/b6/ba/7db6ba10d0ec2efe49757053b72062f6.jpg" alt="تصميم مشروع" loading="lazy">
+                    </a>
                     <div class="card is-left">
                         <div class="content">
                             <span>D</span>
@@ -1116,11 +1053,6 @@
         </section>
     </main>
 
-    <div class="lightbox" id="lightbox" role="dialog" aria-hidden="true">
-        <button class="lightbox-close" id="lightboxClose" aria-label="إغلاق">✕</button>
-        <img class="lightbox-img" id="lightboxImg" src="" alt="عرض الصورة">
-    </div>
-
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const logo = document.getElementById('logoIntro');
@@ -1164,41 +1096,6 @@
                     el.style.animationPlayState = 'paused';
                 });
             }, 7500);
-
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightboxImg');
-            const lightboxClose = document.getElementById('lightboxClose');
-            const trigger = document.querySelector('.lightbox-trigger');
-
-            function openLightbox(src, alt) {
-                lightboxImg.src = src;
-                lightboxImg.alt = alt || '';
-                lightbox.classList.add('is-open');
-                lightbox.setAttribute('aria-hidden', 'false');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeLightbox() {
-                lightbox.classList.remove('is-open');
-                lightbox.setAttribute('aria-hidden', 'true');
-                document.body.style.overflow = '';
-                setTimeout(() => { lightboxImg.src = ''; }, 350);
-            }
-
-            if (trigger) {
-                trigger.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openLightbox(trigger.src, trigger.alt);
-                });
-            }
-
-            lightboxClose.addEventListener('click', closeLightbox);
-            lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) closeLightbox();
-            });
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
-            });
         });
     </script>
 </body>
