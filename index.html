@@ -24,6 +24,8 @@
             font-family: 'Readex Pro', system-ui, -apple-system, sans-serif;
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
@@ -32,9 +34,9 @@
             min-height: 100vh;
         }
 
-        /* ----------------------------------------------------
-           الخلفية
-        ---------------------------------------------------- */
+        /* ====================================================
+           الخلفية — تحسين: blur أقل + إيقاف الحركة عند عدم الرؤية
+        ==================================================== */
         .bg-fluid-container {
             position: fixed;
             top: 0; left: 0;
@@ -44,6 +46,7 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 1.2s ease;
+            contain: strict;
         }
 
         body.fade-in-start .bg-fluid-container { opacity: 1; }
@@ -51,45 +54,60 @@
         .glow-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.55;
-            animation: floatOrb 12s infinite alternate ease-in-out;
+            /* blur مخفّض من 100px إلى 55px — فرق أداء ضخم */
+            filter: blur(55px);
+            opacity: 0.5;
+            /* will-change + transform بدل top/right */
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            animation: floatOrb 14s infinite alternate ease-in-out;
         }
 
         .glow-1 {
-            width: 600px; height: 600px;
+            width: 480px; height: 480px;
             background: radial-gradient(circle, #7e22ce 0%, #3b0764 70%, transparent 100%);
-            top: -100px; right: -100px;
+            top: -80px; right: -80px;
         }
         .glow-2 {
-            width: 500px; height: 500px;
+            width: 420px; height: 420px;
             background: radial-gradient(circle, #c084fc 0%, #4c1d95 60%, transparent 100%);
-            bottom: -50px; left: -100px;
-            animation-delay: -5s;
+            bottom: -60px; left: -80px;
+            animation-delay: -6s;
         }
         .glow-3 {
-            width: 400px; height: 400px;
+            width: 340px; height: 340px;
             background: radial-gradient(circle, #06b6d4 0%, #0f172a 70%, transparent 100%);
             top: 45%; left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.25;
+            margin-left: -170px;
+            margin-top: -170px;
+            opacity: 0.2;
         }
 
         .wave-svg {
             position: absolute;
             width: 100%; height: 100%;
             top: 0; left: 0;
-            opacity: 0.18;
+            opacity: 0.15;
         }
 
         @keyframes floatOrb {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-40px) scale(1.1); }
+            0%   { transform: translate3d(0, 0, 0) scale(1); }
+            100% { transform: translate3d(0, -30px, 0) scale(1.06); }
         }
 
-        /* ----------------------------------------------------
-           شعار البداية
-        ---------------------------------------------------- */
+        /* إيقاف كل الحركات عندما التاب في الخلفية */
+        body.tab-hidden .glow-orb,
+        body.tab-hidden .char-inner,
+        body.tab-hidden .btn-text,
+        body.tab-hidden .wrap_card .card,
+        body.tab-hidden .wrap_card .content > span,
+        body.tab-hidden .wrap_card .content > svg {
+            animation-play-state: paused !important;
+        }
+
+        /* ====================================================
+           شعار البداية — تحسين: تحريك الحروف إلى طبقة GPU
+        ==================================================== */
         .logo-intro-wrapper {
             position: fixed;
             top: 50%; left: 50%;
@@ -98,6 +116,7 @@
             opacity: 0;
             transition: opacity 0.8s ease, top 1s cubic-bezier(0.16, 1, 0.3, 1), right 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
+            will-change: opacity, transform, top;
         }
 
         .logo-intro-wrapper.show-word { opacity: 1; }
@@ -105,7 +124,7 @@
         body.loaded .logo-intro-wrapper {
             top: 25px; right: 8%;
             left: auto;
-            transform: translate(0, 0) scale(1);
+            transform: translate3d(0, 0, 0) scale(1);
         }
 
         .logo-3d-swap {
@@ -119,7 +138,7 @@
         }
 
         .char-wrapper {
-            perspective: 1000px;
+            perspective: 800px;
             display: inline-block;
             height: 38px;
         }
@@ -130,7 +149,8 @@
             background: linear-gradient(135deg, #ffffff 30%, #c084fc 70%, var(--primary-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: autoRotate3d 3s infinite cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform;
+            animation: autoRotate3d 4.5s infinite cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes autoRotate3d {
@@ -150,9 +170,9 @@
         .char-wrapper:nth-child(10) .char-inner { animation-delay: 0.40s; }
         .char-wrapper:nth-child(11) .char-inner { animation-delay: 0.44s; }
 
-        /* ----------------------------------------------------
-           الشريط العلوي
-        ---------------------------------------------------- */
+        /* ====================================================
+           الشريط العلوي — استبدال backdrop-filter بـ background
+        ==================================================== */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -161,12 +181,12 @@
             justify-content: flex-end;
             align-items: center;
             padding: 0 8%;
-            background: rgba(6, 3, 14, 0.85);
-            backdrop-filter: blur(20px);
+            background: rgba(6, 3, 14, 0.92);
             border-bottom: 1px solid rgba(168, 85, 247, 0.15);
             z-index: 999;
             opacity: 0;
             transition: opacity 0.8s ease;
+            will-change: opacity;
         }
 
         body.loaded nav { opacity: 1; }
@@ -177,7 +197,7 @@
             gap: 28px;
             opacity: 0;
             transform: translateY(-10px);
-            transition: all 0.6s ease 0.3s;
+            transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
         }
 
         body.loaded .nav-content {
@@ -200,13 +220,14 @@
 
         .nav-links a:hover { color: #fff; }
 
-        /* ----------------------------------------------------
+        /* ====================================================
            محتوى الصفحة
-        ---------------------------------------------------- */
+        ==================================================== */
         .anim-item {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
         }
 
         body.loaded .anim-1 { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
@@ -215,6 +236,9 @@
         body.loaded .anim-4 { opacity: 1; transform: translateY(0); transition-delay: 0.75s; }
         body.loaded .anim-5 { opacity: 1; transform: translateY(0); transition-delay: 0.9s; }
         body.loaded .anim-6 { opacity: 1; transform: translateY(0); transition-delay: 1.05s; }
+
+        /* إزالة will-change بعد انتهاء الحركة */
+        body.loaded .anim-item { will-change: auto; }
 
         .hero {
             padding: 180px 8% 80px;
@@ -269,9 +293,9 @@
             flex-wrap: wrap;
         }
 
-        /* ----------------------------------------------------
-           البطاقات العادية
-        ---------------------------------------------------- */
+        /* ====================================================
+           البطاقات العادية — إزالة backdrop-filter
+        ==================================================== */
         .features-section {
             padding: 60px 8% 100px;
             max-width: 1200px;
@@ -312,12 +336,14 @@
             padding: 36px 28px;
             border: 1px solid var(--card-border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--card-glow);
-            backdrop-filter: blur(16px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        border-color 0.4s ease,
+                        box-shadow 0.4s ease;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            will-change: transform;
         }
 
         .card::before {
@@ -330,7 +356,7 @@
         }
 
         .card:hover {
-            transform: translateY(-8px);
+            transform: translate3d(0, -8px, 0);
             border-color: rgba(168, 85, 247, 0.7);
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(168, 85, 247, 0.4);
         }
@@ -372,7 +398,7 @@
         }
 
         /* ====================================================
-           الأزرار (Uiverse)
+           الأزرار
         ==================================================== */
         .btn-wrapper {
             position: relative;
@@ -417,11 +443,13 @@
             border: solid 1px #fff2;
             border-radius: var(--border-radius);
             cursor: pointer;
+            isolation: isolate;
 
             transition:
                 box-shadow var(--transition),
                 border var(--transition),
-                background-color var(--transition);
+                background-color var(--transition),
+                transform var(--transition);
         }
 
         .btn::before {
@@ -469,20 +497,10 @@
             position: relative;
             z-index: 1;
             color: #fff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            animation: text-glow 2.5s ease-in-out infinite;
-        }
-
-        @keyframes text-glow {
-            0%, 100% {
-                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5),
-                             0 0 8px rgba(192, 132, 252, 0.4);
-            }
-            50% {
-                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5),
-                             0 0 16px rgba(192, 132, 252, 0.9),
-                             0 0 24px rgba(168, 85, 247, 0.6);
-            }
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5),
+                         0 0 8px rgba(192, 132, 252, 0.4);
+            /* إزالة animation text-glow لمنع إعادة رسم النص كل إطار */
+            transition: text-shadow var(--transition);
         }
 
         .btn-svg {
@@ -518,18 +536,20 @@
         .btn:hover .btn-svg {
             fill: #fff;
             filter: drop-shadow(0 0 4px hsl(var(--highlight-color-hue), 100%, 70%));
-            transform: scale(1.1);
+            transform: scale3d(1.1, 1.1, 1);
         }
 
         .btn:hover .btn-text {
             color: #ffffff;
-            animation-duration: 1s;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5),
+                         0 0 16px rgba(192, 132, 252, 0.9),
+                         0 0 24px rgba(168, 85, 247, 0.6);
         }
 
         .btn:active {
             border: solid 1px hsla(var(--highlight-color-hue), 100%, 80%, 70%);
             background-color: hsla(var(--highlight-color-hue), 50%, 20%, 0.5);
-            transform: translateY(1px);
+            transform: translate3d(0, 1px, 0);
         }
 
         .btn:active::before {
@@ -560,7 +580,7 @@
         }
 
         /* ====================================================
-           قسم البطاقات الدوارة (Uiverse - ilkhoeri)
+           البطاقات الدوارة — تحويل كامل إلى transform
         ==================================================== */
         .rotating-cards-section {
             padding: 40px 8% 20px;
@@ -592,15 +612,16 @@
             --insetX-card: 28px;
             --t-card: calc(var(--insetX-card) * 1.25);
             --w-wrap-card: calc(var(--w-card) + calc(calc(var(--w-card) / 2) * 2));
+            contain: layout paint;
         }
 
         .wrap_card .content {
-            background-color: #ffffff50;
+            background-color: rgba(255, 255, 255, 0.3);
             overflow: hidden;
             position: relative;
-            width: calc(100% - calc(var(--pd) * 2));
-            height: calc(100% - calc(var(--pd) * 2));
-            border-radius: calc(var(--round) - var(--pd));
+            width: calc(100% - 8px);
+            height: calc(100% - 8px);
+            border-radius: 12px;
         }
 
         .wrap_card .content > span {
@@ -610,33 +631,39 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            inset: 50% 0 0 50%;
-            transform: translate(-50%, -50%);
+            top: 50%; left: 50%;
+            transform: translate3d(-50%, -50%, 0);
             background-clip: text;
             -webkit-text-stroke-width: 3px;
             color: transparent;
             opacity: 0;
             background-image: linear-gradient(-45deg, #ffffff25 0%, #ffffffac 100%);
-            animation: opacity 0s cubic-bezier(1, 0, 0, 1) forwards var(--delay) reverse;
+            animation: fadeSpan 0.6s cubic-bezier(1, 0, 0, 1) forwards;
+            animation-delay: var(--delay);
         }
 
         .wrap_card .content > svg {
             height: 66px;
             width: 66px;
             position: absolute;
-            inset: 50% 0 0 50%;
+            top: 50%; left: 50%;
             opacity: 1;
-            animation: opacity 8.4s cubic-bezier(1, 0, 0, 1) forwards calc(var(--delay) - 4.3s);
-            transform: translate(-50%, -50%);
+            transform: translate3d(-50%, -50%, 0);
+            animation: fadeSvg 8.4s cubic-bezier(1, 0, 0, 1) forwards;
+            animation-delay: calc(var(--delay) - 4.3s);
         }
 
         .wrap_card .card:nth-child(1) { --delay: 4.3s; }
         .wrap_card .card:nth-child(2) { --delay: 7.3s; }
         .wrap_card .card:nth-child(3) { --delay: 10.3s; }
 
-        @keyframes opacity {
+        @keyframes fadeSpan {
             from { opacity: 1; }
-            to { opacity: 0; }
+            to   { opacity: 0; }
+        }
+        @keyframes fadeSvg {
+            from { opacity: 1; }
+            to   { opacity: 0; }
         }
 
         .wrap_card .card {
@@ -645,76 +672,54 @@
             justify-content: center;
             position: absolute;
             overflow: hidden;
-            animation: rotating 9s cubic-bezier(0.75, 0, 0, 1.01) infinite 0s;
-            border-radius: var(--round);
-            background: var(--bg);
-            order: var(--order);
+            /* كل الحركات تعتمد transform الآن — لا top/left/right */
             width: var(--w-card);
             height: var(--h-card);
-            z-index: var(--z1);
-            top: var(--t1);
-            left: var(--l1);
-            right: var(--r1);
-            transform: var(--trans1);
-            --pd: 4px;
-            --round: 16px;
-            --x1: var(--insetX-card);
-            --x2: calc(var(--w-wrap-card) - calc(var(--w-card) + var(--insetX-card)));
-            --to-left: rotate(calc(var(--rotate-card) * -1));
-            --to-center: calc(var(--w-card) / 2);
-            --to-right: rotate(calc(var(--rotate-card) * 1));
+            border-radius: 16px;
+            background: var(--bg);
+            top: 50%;
+            left: 50%;
+            margin-top: calc(var(--h-card) / -2);
+            margin-left: calc(var(--w-card) / -2);
+            will-change: transform;
+            transform: translate3d(var(--tx), var(--ty), 0) rotate(var(--rot));
+            transition: transform 0.9s cubic-bezier(0.75, 0, 0, 1.01);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.2);
+            z-index: 1;
+        }
+
+        /* البطاقة في المنتصف = الأمام */
+        .wrap_card .card.is-front {
+            --tx: 0px;
+            --ty: -18px;
+            --rot: 0deg;
+            z-index: 5;
+        }
+
+        /* البطاقة على اليمين */
+        .wrap_card .card.is-right {
+            --tx: calc((var(--w-card) / 2) + var(--insetX-card));
+            --ty: 20px;
+            --rot: 15deg;
+            z-index: 2;
+        }
+
+        /* البطاقة على اليسار */
+        .wrap_card .card.is-left {
+            --tx: calc((var(--w-card) / 2 + var(--insetX-card)) * -1);
+            --ty: 20px;
+            --rot: -15deg;
+            z-index: 2;
         }
 
         .wrap_card .card:nth-child(1) {
-            --order: 2;
             --bg: radial-gradient(circle, #c084fc 0%, #a855f7 40%, #6b21a8 100%);
-            --z1: 2; --t1: 0; --l1: var(--to-center); --r1: var(--to-center);
-            --trans1: rotate(calc(var(--rotate-card) * 0));
-            --z2: 0; --t2: var(--t-card); --l2: var(--x1); --r2: var(--x2);
-            --trans2: var(--to-left);
-            --z3: 0; --t3: var(--t-card); --l3: var(--x2); --r3: var(--x1);
-            --trans3: var(--to-right);
         }
-
         .wrap_card .card:nth-child(2) {
-            --order: 3;
             --bg: radial-gradient(circle, #67e8f9 0%, #06b6d4 40%, #0e7490 100%);
-            --z1: 0; --t1: var(--t-card); --l1: var(--x2); --r1: var(--x1);
-            --trans1: var(--to-right);
-            --z2: 2; --t2: 0; --l2: var(--to-center); --r2: var(--to-center);
-            --trans2: rotate(calc(var(--rotate-card) * 0));
-            --z3: 0; --t3: var(--t-card); --l3: var(--x1); --r3: var(--x2);
-            --trans3: var(--to-left);
         }
-
         .wrap_card .card:nth-child(3) {
-            --order: 1;
             --bg: radial-gradient(circle, #f0abfc 0%, #d946ef 40%, #86198f 100%);
-            --z1: 0; --t1: var(--t-card); --l1: var(--x1); --r1: var(--x2);
-            --trans1: var(--to-left);
-            --z2: 0; --t2: var(--t-card); --l2: var(--x2); --r2: var(--x1);
-            --trans2: var(--to-right);
-            --z3: 2; --t3: 0; --l3: var(--to-center); --r3: var(--to-center);
-            --trans3: rotate(calc(var(--rotate-card) * 0));
-        }
-
-        @keyframes rotating {
-            0%, 99.99% {
-                z-index: var(--z1);
-                top: var(--t1); left: var(--l1); right: var(--r1);
-                transform: var(--trans1);
-            }
-            33.33% {
-                z-index: var(--z2);
-                top: var(--t2); left: var(--l2); right: var(--r2);
-                transform: var(--trans2);
-            }
-            66.66% {
-                z-index: var(--z3);
-                top: var(--t3); left: var(--l3); right: var(--r3);
-                transform: var(--trans3);
-            }
         }
 
         .wrap_card .lines {
@@ -737,6 +742,7 @@
             --mask-bg: #06030e;
             background: var(--mask-bg);
             mask-image: radial-gradient(50% 200px at top, transparent 20%, var(--mask-bg));
+            -webkit-mask-image: radial-gradient(50% 200px at top, transparent 20%, var(--mask-bg));
         }
 
         .wrap_card .line {
@@ -797,6 +803,9 @@
             .cta-group { flex-direction: column; align-items: center; }
             .btn-wrapper { width: 100%; max-width: 320px; }
             .btn { width: 100%; }
+
+            /* إيقاف بعض الحركات على الجوال لتخفيف الحمل */
+            .glow-orb { animation: none; }
         }
 
         @media (max-width: 480px) {
@@ -807,6 +816,17 @@
             }
             .wrap_card .content > span { font-size: 240px; }
             .wrap_card .content > svg { width: 54px; height: 54px; }
+        }
+
+        /* ====================================================
+           احترام تفضيل تقليل الحركة
+        ==================================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
@@ -833,7 +853,7 @@
         <div class="glow-orb glow-2"></div>
         <div class="glow-orb glow-3"></div>
 
-        <svg class="wave-svg" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="wave-svg" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
             <path d="M-100 200 C300 400, 700 100, 1500 500 C2000 800, 1200 900, 800 1100" stroke="url(#purple-line)" stroke-width="3" fill="none"/>
             <path d="M-200 400 C400 600, 800 200, 1600 700" stroke="url(#cyan-line)" stroke-width="2" fill="none"/>
             <defs>
@@ -900,11 +920,11 @@
             </div>
         </section>
 
-        <!-- البطاقات الدوارة فوق قسم الخدمات -->
+        <!-- البطاقات الدوارة -->
         <section class="rotating-cards-section anim-item anim-5">
             <div class="rotating-cards-wrap">
-                <div class="wrap_card">
-                    <div class="card">
+                <div class="wrap_card" id="rotatingCards">
+                    <div class="card is-front">
                         <div class="content">
                             <span>W</span>
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -914,7 +934,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card is-right">
                         <div class="content">
                             <span>A</span>
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -922,7 +942,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card is-left">
                         <div class="content">
                             <span>D</span>
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1004,6 +1024,46 @@
             setTimeout(() => {
                 document.body.classList.add('loaded');
             }, 3100);
+
+            /* ====================================================
+               1. إيقاف جميع الحركات عندما التاب في الخلفية
+            ==================================================== */
+            document.addEventListener('visibilitychange', () => {
+                document.body.classList.toggle('tab-hidden', document.hidden);
+            });
+
+            /* ====================================================
+               2. تشغيل دوران البطاقات بـ JS عبر تبديل class
+                  بدل @keyframes top/left/right = أداء GPU كامل
+            ==================================================== */
+            const rotatingCards = document.querySelectorAll('#rotatingCards .card');
+            const positions = ['is-front', 'is-right', 'is-left'];
+            let rotationIndex = 0;
+
+            // تعيين المواضع الأولية
+            rotatingCards.forEach((card, i) => {
+                card.classList.add(positions[i % 3]);
+            });
+
+            setInterval(() => {
+                if (document.hidden) return;
+                rotationIndex = (rotationIndex + 1) % 3;
+                rotatingCards.forEach((card, i) => {
+                    card.classList.remove('is-front', 'is-right', 'is-left');
+                    card.classList.add(positions[(i + rotationIndex) % 3]);
+                });
+            }, 3000);
+
+            /* ====================================================
+               3. إيقاف حركة الحروف وبعض الحركات بعد فترة البداية
+                  (الموقع لا يحتاجها بعد أن استقر الشعار في الأعلى)
+            ==================================================== */
+            setTimeout(() => {
+                const charInners = document.querySelectorAll('.char-inner');
+                charInners.forEach(el => {
+                    el.style.animationPlayState = 'paused';
+                });
+            }, 6500);
         });
     </script>
 </body>
