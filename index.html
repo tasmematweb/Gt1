@@ -34,9 +34,6 @@
             min-height: 100vh;
         }
 
-        /* ====================================================
-           الخلفية
-        ==================================================== */
         .bg-fluid-container {
             position: fixed;
             top: 0; left: 0;
@@ -97,12 +94,13 @@
         body.tab-hidden .char-inner,
         body.tab-hidden .wrap_card .card,
         body.tab-hidden .wrap_card .content > span,
-        body.tab-hidden .wrap_card .content > svg {
+        body.tab-hidden .wrap_card .content > svg,
+        body.tab-hidden .card-price {
             animation-play-state: paused !important;
         }
 
         /* ====================================================
-           شعار البداية — كلمة تصميمات ويب (1 ثانية) ثم tasmematweb
+           شعار البداية
         ==================================================== */
         .logo-intro-wrapper {
             position: fixed;
@@ -123,7 +121,6 @@
             transform: translate3d(0, 0, 0) scale(1);
         }
 
-        /* صندوق الشعار يعرض الكلمتين متراكبتين */
         .logo-swap-box {
             position: relative;
             display: inline-block;
@@ -131,7 +128,6 @@
             min-width: 260px;
         }
 
-        /* الشعار العربي "تصميمات ويب" */
         .logo-arabic {
             position: absolute;
             top: 0; left: 50%;
@@ -148,7 +144,6 @@
             transition: opacity 0.5s ease;
         }
 
-        /* الشعار الإنجليزي "tasmematweb" */
         .logo-3d-swap {
             position: absolute;
             top: 0; left: 50%;
@@ -165,7 +160,6 @@
             transition: opacity 0.5s ease;
         }
 
-        /* عند التبديل: الإنجليزي يظهر والعربي يختفي */
         .logo-intro-wrapper.show-english .logo-arabic { opacity: 0; }
         .logo-intro-wrapper.show-english .logo-3d-swap { opacity: 1; }
 
@@ -656,6 +650,69 @@
             border-radius: 12px;
         }
 
+        /* البطاقة التي تحتوي صورة */
+        .wrap_card .card.has-image .content {
+            background-color: transparent;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+        }
+
+        .wrap_card .card.has-image .content > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 16px;
+        }
+
+        /* طبقة تعتيم فوق الصورة لتحسين قراءة النص */
+        .wrap_card .card.has-image .content::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.35) 0%,
+                rgba(0, 0, 0, 0.05) 40%,
+                rgba(0, 0, 0, 0.55) 100%
+            );
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        /* نص 5500 فوق الصورة */
+        .wrap_card .card.has-image .card-price {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            z-index: 3;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9),
+                         0 0 24px rgba(168, 85, 247, 0.7);
+            animation: pricePulse 2.4s ease-in-out infinite;
+            pointer-events: none;
+            font-family: "Poppins", "Readex Pro", sans-serif;
+        }
+
+        @keyframes pricePulse {
+            0%, 100% {
+                text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9),
+                             0 0 24px rgba(168, 85, 247, 0.7);
+                transform: translate3d(-50%, -50%, 0) scale(1);
+            }
+            50% {
+                text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9),
+                             0 0 32px rgba(192, 132, 252, 1),
+                             0 0 48px rgba(168, 85, 247, 0.8);
+                transform: translate3d(-50%, -50%, 0) scale(1.06);
+            }
+        }
+
         .wrap_card .content > span {
             font-size: 300px;
             font-weight: 800;
@@ -845,6 +902,7 @@
             }
             .wrap_card .content > span { font-size: 240px; }
             .wrap_card .content > svg { width: 54px; height: 54px; }
+            .wrap_card .card.has-image .card-price { font-size: 1.7rem; }
 
             .logo-swap-box { min-width: 210px; }
             .logo-arabic, .logo-3d-swap { font-size: 1.3rem; }
@@ -965,12 +1023,10 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="card is-right">
+                    <div class="card is-right has-image">
                         <div class="content">
-                            <span>A</span>
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
+                            <img src="https://i.pinimg.com/736x/7d/b6/ba/7db6ba10d0ec2efe49757053b72062f6.jpg" alt="تصميم مشروع" loading="lazy">
+                            <div class="card-price">5500</div>
                         </div>
                     </div>
                     <div class="card is-left">
@@ -1047,28 +1103,23 @@
         window.addEventListener('DOMContentLoaded', () => {
             const logo = document.getElementById('logoIntro');
 
-            // 1. ظهور كلمة "تصميمات ويب" في المنتصف
             setTimeout(() => {
                 document.body.classList.add('fade-in-start');
                 logo.classList.add('show-word');
             }, 100);
 
-            // 2. بعد 3 ثوانٍ: تبديل إلى tasmematweb في نفس المكان
             setTimeout(() => {
                 logo.classList.add('show-english');
             }, 3100);
 
-            // 3. بعد ثانية إضافية (4 ثوانٍ إجمالاً): انطلاق الموقع
             setTimeout(() => {
                 document.body.classList.add('loaded');
             }, 4100);
 
-            /* إيقاف الحركات عند إخفاء التاب */
             document.addEventListener('visibilitychange', () => {
                 document.body.classList.toggle('tab-hidden', document.hidden);
             });
 
-            /* دوران البطاقات عبر تبديل class */
             const rotatingCards = document.querySelectorAll('#rotatingCards .card');
             const positions = ['is-front', 'is-right', 'is-left'];
             let rotationIndex = 0;
@@ -1086,7 +1137,6 @@
                 });
             }, 3000);
 
-            /* إيقاف حركة الحروف بعد استقرار الشعار */
             setTimeout(() => {
                 document.querySelectorAll('.char-inner').forEach(el => {
                     el.style.animationPlayState = 'paused';
