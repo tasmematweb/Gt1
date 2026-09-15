@@ -714,12 +714,14 @@
         }
 
         /* ====================================================
-           البطاقة التي تحتوي صورة — مسافة على الحواف
+           البطاقة التي تحتوي صورة — الصورة كاملة داخل الكرت
         ==================================================== */
         .wrap_card .card.has-image {
-            padding: 10px !important;
+            padding: 14px !important;
             overflow: hidden !important;
-            display: block !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             text-decoration: none;
         }
@@ -727,12 +729,12 @@
         .wrap_card .card.has-image img {
             width: 100% !important;
             height: 100% !important;
-            object-fit: cover !important;
+            object-fit: contain !important;
             object-position: center !important;
             display: block !important;
             margin: 0 !important;
             border: 0 !important;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .wrap_card .card.is-front {
