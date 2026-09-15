@@ -35,7 +35,7 @@
         }
 
         /* ====================================================
-           الخلفية — تحسين: blur أقل + إيقاف الحركة عند عدم الرؤية
+           الخلفية
         ==================================================== */
         .bg-fluid-container {
             position: fixed;
@@ -54,10 +54,8 @@
         .glow-orb {
             position: absolute;
             border-radius: 50%;
-            /* blur مخفّض من 100px إلى 55px — فرق أداء ضخم */
             filter: blur(55px);
             opacity: 0.5;
-            /* will-change + transform بدل top/right */
             will-change: transform;
             transform: translate3d(0, 0, 0);
             animation: floatOrb 14s infinite alternate ease-in-out;
@@ -95,10 +93,8 @@
             100% { transform: translate3d(0, -30px, 0) scale(1.06); }
         }
 
-        /* إيقاف كل الحركات عندما التاب في الخلفية */
         body.tab-hidden .glow-orb,
         body.tab-hidden .char-inner,
-        body.tab-hidden .btn-text,
         body.tab-hidden .wrap_card .card,
         body.tab-hidden .wrap_card .content > span,
         body.tab-hidden .wrap_card .content > svg {
@@ -106,7 +102,7 @@
         }
 
         /* ====================================================
-           شعار البداية — تحسين: تحريك الحروف إلى طبقة GPU
+           شعار البداية — كلمة تصميمات ويب (1 ثانية) ثم tasmematweb
         ==================================================== */
         .logo-intro-wrapper {
             position: fixed;
@@ -127,7 +123,36 @@
             transform: translate3d(0, 0, 0) scale(1);
         }
 
+        /* صندوق الشعار يعرض الكلمتين متراكبتين */
+        .logo-swap-box {
+            position: relative;
+            display: inline-block;
+            height: 38px;
+            min-width: 260px;
+        }
+
+        /* الشعار العربي "تصميمات ويب" */
+        .logo-arabic {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translate3d(-50%, 0, 0);
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+            background: linear-gradient(135deg, #ffffff 30%, #c084fc 70%, var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        /* الشعار الإنجليزي "tasmematweb" */
         .logo-3d-swap {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translate3d(-50%, 0, 0);
             display: inline-flex;
             direction: ltr;
             cursor: pointer;
@@ -135,7 +160,14 @@
             font-weight: 800;
             letter-spacing: -0.5px;
             user-select: none;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
+
+        /* عند التبديل: الإنجليزي يظهر والعربي يختفي */
+        .logo-intro-wrapper.show-english .logo-arabic { opacity: 0; }
+        .logo-intro-wrapper.show-english .logo-3d-swap { opacity: 1; }
 
         .char-wrapper {
             perspective: 800px;
@@ -149,6 +181,7 @@
             background: linear-gradient(135deg, #ffffff 30%, #c084fc 70%, var(--primary-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             will-change: transform;
             animation: autoRotate3d 4.5s infinite cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -171,7 +204,7 @@
         .char-wrapper:nth-child(11) .char-inner { animation-delay: 0.44s; }
 
         /* ====================================================
-           الشريط العلوي — استبدال backdrop-filter بـ background
+           الشريط العلوي
         ==================================================== */
         nav {
             position: fixed;
@@ -237,7 +270,6 @@
         body.loaded .anim-5 { opacity: 1; transform: translateY(0); transition-delay: 0.9s; }
         body.loaded .anim-6 { opacity: 1; transform: translateY(0); transition-delay: 1.05s; }
 
-        /* إزالة will-change بعد انتهاء الحركة */
         body.loaded .anim-item { will-change: auto; }
 
         .hero {
@@ -270,12 +302,14 @@
             background: linear-gradient(180deg, #ffffff 40%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero h1 span {
             background: linear-gradient(135deg, #c084fc, #a855f7, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero p {
@@ -294,7 +328,7 @@
         }
 
         /* ====================================================
-           البطاقات العادية — إزالة backdrop-filter
+           البطاقات العادية
         ==================================================== */
         .features-section {
             padding: 60px 8% 100px;
@@ -314,6 +348,7 @@
             background: linear-gradient(135deg, #fff, #d8b4fe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .section-header p {
@@ -499,7 +534,6 @@
             color: #fff;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5),
                          0 0 8px rgba(192, 132, 252, 0.4);
-            /* إزالة animation text-glow لمنع إعادة رسم النص كل إطار */
             transition: text-shadow var(--transition);
         }
 
@@ -531,6 +565,7 @@
         .btn:hover::after {
             opacity: 1;
             mask-image: linear-gradient(0deg, #fff, transparent);
+            -webkit-mask-image: linear-gradient(0deg, #fff, transparent);
         }
 
         .btn:hover .btn-svg {
@@ -565,6 +600,7 @@
         .btn:active::after {
             opacity: 1;
             mask-image: linear-gradient(0deg, #fff, transparent);
+            -webkit-mask-image: linear-gradient(0deg, #fff, transparent);
             filter: brightness(200%);
         }
 
@@ -580,7 +616,7 @@
         }
 
         /* ====================================================
-           البطاقات الدوارة — تحويل كامل إلى transform
+           البطاقات الدوارة
         ==================================================== */
         .rotating-cards-section {
             padding: 40px 8% 20px;
@@ -595,24 +631,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 30px 0;
+            padding: 60px 0;
         }
 
         .wrap_card {
             position: relative;
-            overflow: hidden;
             width: var(--w-wrap-card);
-            height: calc(var(--h-card) / 1.25);
+            height: var(--h-card);
             display: flex;
             align-items: center;
             justify-content: center;
             --w-card: 150px;
             --h-card: 200px;
-            --rotate-card: 15deg;
             --insetX-card: 28px;
-            --t-card: calc(var(--insetX-card) * 1.25);
             --w-wrap-card: calc(var(--w-card) + calc(calc(var(--w-card) / 2) * 2));
-            contain: layout paint;
         }
 
         .wrap_card .content {
@@ -634,6 +666,7 @@
             top: 50%; left: 50%;
             transform: translate3d(-50%, -50%, 0);
             background-clip: text;
+            -webkit-background-clip: text;
             -webkit-text-stroke-width: 3px;
             color: transparent;
             opacity: 0;
@@ -672,7 +705,6 @@
             justify-content: center;
             position: absolute;
             overflow: hidden;
-            /* كل الحركات تعتمد transform الآن — لا top/left/right */
             width: var(--w-card);
             height: var(--h-card);
             border-radius: 16px;
@@ -688,26 +720,23 @@
             z-index: 1;
         }
 
-        /* البطاقة في المنتصف = الأمام */
         .wrap_card .card.is-front {
             --tx: 0px;
-            --ty: -18px;
+            --ty: 0px;
             --rot: 0deg;
             z-index: 5;
         }
 
-        /* البطاقة على اليمين */
         .wrap_card .card.is-right {
-            --tx: calc((var(--w-card) / 2) + var(--insetX-card));
-            --ty: 20px;
+            --tx: calc(var(--w-card) / 2 + var(--insetX-card));
+            --ty: 0px;
             --rot: 15deg;
             z-index: 2;
         }
 
-        /* البطاقة على اليسار */
         .wrap_card .card.is-left {
             --tx: calc((var(--w-card) / 2 + var(--insetX-card)) * -1);
-            --ty: 20px;
+            --ty: 0px;
             --rot: -15deg;
             z-index: 2;
         }
@@ -730,6 +759,7 @@
             align-items: center;
             justify-content: center;
             z-index: 4;
+            pointer-events: none;
         }
 
         .wrap_card .lines::after {
@@ -804,7 +834,6 @@
             .btn-wrapper { width: 100%; max-width: 320px; }
             .btn { width: 100%; }
 
-            /* إيقاف بعض الحركات على الجوال لتخفيف الحمل */
             .glow-orb { animation: none; }
         }
 
@@ -816,11 +845,11 @@
             }
             .wrap_card .content > span { font-size: 240px; }
             .wrap_card .content > svg { width: 54px; height: 54px; }
+
+            .logo-swap-box { min-width: 210px; }
+            .logo-arabic, .logo-3d-swap { font-size: 1.3rem; }
         }
 
-        /* ====================================================
-           احترام تفضيل تقليل الحركة
-        ==================================================== */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -833,18 +862,21 @@
 <body>
 
     <div class="logo-intro-wrapper" id="logoIntro">
-        <div class="logo-3d-swap">
-            <span class="char-wrapper"><span class="char-inner">t</span></span>
-            <span class="char-wrapper"><span class="char-inner">a</span></span>
-            <span class="char-wrapper"><span class="char-inner">s</span></span>
-            <span class="char-wrapper"><span class="char-inner">m</span></span>
-            <span class="char-wrapper"><span class="char-inner">e</span></span>
-            <span class="char-wrapper"><span class="char-inner">m</span></span>
-            <span class="char-wrapper"><span class="char-inner">a</span></span>
-            <span class="char-wrapper"><span class="char-inner">t</span></span>
-            <span class="char-wrapper"><span class="char-inner">w</span></span>
-            <span class="char-wrapper"><span class="char-inner">e</span></span>
-            <span class="char-wrapper"><span class="char-inner">b</span></span>
+        <div class="logo-swap-box">
+            <div class="logo-arabic">تصميمات ويب</div>
+            <div class="logo-3d-swap">
+                <span class="char-wrapper"><span class="char-inner">t</span></span>
+                <span class="char-wrapper"><span class="char-inner">a</span></span>
+                <span class="char-wrapper"><span class="char-inner">s</span></span>
+                <span class="char-wrapper"><span class="char-inner">m</span></span>
+                <span class="char-wrapper"><span class="char-inner">e</span></span>
+                <span class="char-wrapper"><span class="char-inner">m</span></span>
+                <span class="char-wrapper"><span class="char-inner">a</span></span>
+                <span class="char-wrapper"><span class="char-inner">t</span></span>
+                <span class="char-wrapper"><span class="char-inner">w</span></span>
+                <span class="char-wrapper"><span class="char-inner">e</span></span>
+                <span class="char-wrapper"><span class="char-inner">b</span></span>
+            </div>
         </div>
     </div>
 
@@ -920,7 +952,6 @@
             </div>
         </section>
 
-        <!-- البطاقات الدوارة -->
         <section class="rotating-cards-section anim-item anim-5">
             <div class="rotating-cards-wrap">
                 <div class="wrap_card" id="rotatingCards">
@@ -1016,31 +1047,32 @@
         window.addEventListener('DOMContentLoaded', () => {
             const logo = document.getElementById('logoIntro');
 
+            // 1. ظهور كلمة "تصميمات ويب" في المنتصف
             setTimeout(() => {
                 document.body.classList.add('fade-in-start');
                 logo.classList.add('show-word');
             }, 100);
 
+            // 2. بعد 3 ثوانٍ: تبديل إلى tasmematweb في نفس المكان
             setTimeout(() => {
-                document.body.classList.add('loaded');
+                logo.classList.add('show-english');
             }, 3100);
 
-            /* ====================================================
-               1. إيقاف جميع الحركات عندما التاب في الخلفية
-            ==================================================== */
+            // 3. بعد ثانية إضافية (4 ثوانٍ إجمالاً): انطلاق الموقع
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 4100);
+
+            /* إيقاف الحركات عند إخفاء التاب */
             document.addEventListener('visibilitychange', () => {
                 document.body.classList.toggle('tab-hidden', document.hidden);
             });
 
-            /* ====================================================
-               2. تشغيل دوران البطاقات بـ JS عبر تبديل class
-                  بدل @keyframes top/left/right = أداء GPU كامل
-            ==================================================== */
+            /* دوران البطاقات عبر تبديل class */
             const rotatingCards = document.querySelectorAll('#rotatingCards .card');
             const positions = ['is-front', 'is-right', 'is-left'];
             let rotationIndex = 0;
 
-            // تعيين المواضع الأولية
             rotatingCards.forEach((card, i) => {
                 card.classList.add(positions[i % 3]);
             });
@@ -1054,16 +1086,12 @@
                 });
             }, 3000);
 
-            /* ====================================================
-               3. إيقاف حركة الحروف وبعض الحركات بعد فترة البداية
-                  (الموقع لا يحتاجها بعد أن استقر الشعار في الأعلى)
-            ==================================================== */
+            /* إيقاف حركة الحروف بعد استقرار الشعار */
             setTimeout(() => {
-                const charInners = document.querySelectorAll('.char-inner');
-                charInners.forEach(el => {
+                document.querySelectorAll('.char-inner').forEach(el => {
                     el.style.animationPlayState = 'paused';
                 });
-            }, 6500);
+            }, 7500);
         });
     </script>
 </body>
