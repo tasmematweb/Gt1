@@ -98,9 +98,6 @@
             animation-play-state: paused !important;
         }
 
-        /* ====================================================
-           شعار البداية
-        ==================================================== */
         .logo-intro-wrapper {
             position: fixed;
             top: 50%; left: 50%;
@@ -196,9 +193,6 @@
         .char-wrapper:nth-child(10) .char-inner { animation-delay: 0.40s; }
         .char-wrapper:nth-child(11) .char-inner { animation-delay: 0.44s; }
 
-        /* ====================================================
-           الشريط العلوي
-        ==================================================== */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -246,9 +240,6 @@
 
         .nav-links a:hover { color: #fff; }
 
-        /* ====================================================
-           محتوى الصفحة
-        ==================================================== */
         .anim-item {
             opacity: 0;
             transform: translateY(30px);
@@ -320,9 +311,6 @@
             flex-wrap: wrap;
         }
 
-        /* ====================================================
-           البطاقات العادية
-        ==================================================== */
         .features-section {
             padding: 60px 8% 100px;
             max-width: 1200px;
@@ -425,9 +413,6 @@
             font-weight: 600;
         }
 
-        /* ====================================================
-           الأزرار
-        ==================================================== */
         .btn-wrapper {
             position: relative;
             display: inline-block;
@@ -608,9 +593,6 @@
             height: 18px;
         }
 
-        /* ====================================================
-           البطاقات الدوارة
-        ==================================================== */
         .rotating-cards-section {
             padding: 40px 8% 20px;
             display: flex;
@@ -714,10 +696,10 @@
         }
 
         /* ====================================================
-           البطاقة التي تحتوي صورة — الصورة كاملة داخل الكرت
+           البطاقة التي تحتوي صورة — الصورة كبيرة مع مسافة بسيطة وحواف مائلة
         ==================================================== */
         .wrap_card .card.has-image {
-            padding: 14px !important;
+            padding: 6px !important;
             overflow: hidden !important;
             display: flex !important;
             align-items: center;
@@ -734,7 +716,14 @@
             display: block !important;
             margin: 0 !important;
             border: 0 !important;
-            border-radius: 8px;
+            /* الحواف المائلة */
+            border-radius: 14px;
+            transform: skewX(-3deg) skewY(-1.5deg);
+            transition: transform 0.4s ease;
+        }
+
+        .wrap_card .card.has-image:hover img {
+            transform: skewX(-3deg) skewY(-1.5deg) scale(1.03);
         }
 
         .wrap_card .card.is-front {
@@ -839,9 +828,6 @@
             --gradient-b-line: #67e8f9;
         }
 
-        /* ====================================================
-           التجاوب
-        ==================================================== */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hero { padding-top: 140px; }
