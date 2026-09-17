@@ -872,6 +872,77 @@
         }
 
         /* ====================================================
+           تفاصيل الخدمة أسفل الكروت
+        ==================================================== */
+        .offer-details {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 40px;
+            padding: 0 20px;
+            max-width: 720px;
+        }
+
+        .offer-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #fff, #d8b4fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .offer-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .offer-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            color: #e9d5ff;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.15);
+        }
+
+        .offer-price {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(6, 182, 212, 0.12));
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
+        }
+
+        .offer-price .price-value {
+            background: linear-gradient(135deg, #c084fc, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .offer-price .price-label {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* ====================================================
            التجاوب
         ==================================================== */
         @media (max-width: 768px) {
@@ -884,6 +955,10 @@
             .btn { width: 100%; }
 
             .glow-orb { animation: none; }
+
+            .offer-title { font-size: 1.25rem; }
+            .offer-chip { font-size: 0.82rem; padding: 7px 14px; }
+            .offer-price { font-size: 1rem; padding: 10px 22px; }
         }
 
         @media (max-width: 480px) {
@@ -1031,6 +1106,19 @@
                         <div class="line"></div>
                         <div class="line"></div>
                     </div>
+                </div>
+            </div>
+
+            <div class="offer-details">
+                <div class="offer-title">أهم المميزات</div>
+                <div class="offer-features">
+                    <span class="offer-chip">🌐 استضافة</span>
+                    <span class="offer-chip">🔗 دومين لمدة سنة</span>
+                    <span class="offer-chip">🛠️ صفحة أدمن للتحكم في المنتجات</span>
+                </div>
+                <div class="offer-price">
+                    <span class="price-label">السعر:</span>
+                    <span class="price-value">4500 إلى 6500</span>
                 </div>
             </div>
         </section>
