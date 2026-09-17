@@ -612,12 +612,34 @@
            البطاقات الدوارة
         ==================================================== */
         .rotating-cards-section {
-            padding: 40px 8% 20px;
+            padding: 0 8% 20px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .rotating-header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        .rotating-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff, #d8b4fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .rotating-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
         }
 
         .rotating-cards-wrap {
@@ -955,7 +977,7 @@
             
             <h1 class="anim-item anim-2">نُنشئ لك <span>مستقبلك الرقمي</span> بكل إتقان</h1>
 
-            <p class="anim-item anim-3">نحول أفكارك البرمجية والتجارية إلى مواقع وتطبيقات تفاعلية فائقة السرعة، بتصميم عصري وأعلى معايير الأمان.</p>
+            <p class="anim-item anim-3">نحوّل أفكارك البرمجية والتجارية إلى مواقع وتطبيقات تفاعلية فائقة السرعة، بتصميم عصري وأعلى معايير الأمان.</p>
             
             <div class="cta-group anim-item anim-4">
                 <div class="btn-wrapper">
@@ -980,6 +1002,10 @@
         </section>
 
         <section class="rotating-cards-section anim-item anim-5">
+            <div class="rotating-header">
+                <h2>بعض أعمالنا</h2>
+                <p>اضغط على الصورة لتصفح الموقع</p>
+            </div>
             <div class="rotating-cards-wrap">
                 <div class="wrap_card" id="rotatingCards">
                     <div class="card is-front">
@@ -1024,7 +1050,7 @@
                         <h3>إنشاء مواقع وتطبيقات</h3>
                         <p>برمجة وتصميم منصات الويب والمتاجر والتطبيقات بأحدث التقنيات وأفضل واجهات المستخدم UI/UX.</p>
                     </div>
-                    <div class="card-tag">⚡ أداء فائق وسرعة عاليّة</div>
+                    <div class="card-tag">⚡ أداء فائق وسرعة عالية</div>
                 </div>
 
                 <div class="card">
