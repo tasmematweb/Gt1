@@ -76,13 +76,17 @@ button{font:inherit}
 }
 .logo-intro.show{opacity:1}
 .logo-intro.move{
-    top:50%;right:auto;left:44px;
-    transform:translate(0,-50%) scale(.72);
+    top:0;left:0;right:auto;
+    height:82px;
+    display:flex;align-items:center;
+    padding-left:32px;
+    transform:translate(0,0) scale(1);
+    transform-origin:left center;
 }
 .logo-ar{display:none;font-size:1.8rem;font-weight:800;white-space:nowrap;text-align:center;
     background:linear-gradient(135deg,#fff,#c084fc,var(--purple));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-.logo-en{display:block;direction:ltr;font-family:Poppins,sans-serif;font-size:1.85rem;font-weight:700;letter-spacing:-1px}
+.logo-en{display:block;direction:ltr;font-family:Poppins,sans-serif;font-size:2rem;font-weight:700;letter-spacing:-1px;line-height:1}
 .logo-intro.english .logo-ar{display:none}
 .logo-intro.english .logo-en{display:block}
 .logo-en span{display:inline-block;animation:letter 1.7s infinite}
@@ -266,8 +270,9 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
     .modal-meta{grid-template-columns:1fr}.modal-preview{height:230px}
 }
 @media(max-width:480px){
-    .logo-intro.move{left:20px;transform:translate(0,-50%) scale(.62)}
-    .logo-ar,.logo-en{font-size:1.45rem}.hero{padding-left:16px;padding-right:16px}
+    .logo-intro.move{height:72px;padding-left:18px;transform:translate(0,0) scale(.85)}
+    .logo-ar,.logo-en{font-size:1.65rem}
+    .hero{padding-left:16px;padding-right:16px}
     .hero p{font-size:.92rem}.project-card{width:150px;height:215px}.cards{width:290px;height:245px}
     .project-card.right{transform:translate(10%,-50%) rotate(12deg)}
     .project-card.left{transform:translate(-110%,-50%) rotate(-12deg)}
@@ -449,11 +454,9 @@ const projects=[
 
 const logo=document.getElementById("logoIntro");
 
-// شاشة البداية: يظهر اسم tasmematweb مباشرة ثم ينتظر 4 ثوانٍ.
 document.body.classList.add("loading");
 setTimeout(()=>logo.classList.add("show"),100);
 
-// بعد 4 ثوانٍ يفتح الموقع ويتحرك الشعار إلى مكانه في الشريط العلوي (أقصى اليسار داخل النافبار).
 setTimeout(()=>{
     document.body.classList.remove("loading");
     document.body.classList.add("ready");
