@@ -76,7 +76,8 @@ button{font:inherit}
 }
 .logo-intro.show{opacity:1}
 .logo-intro.move{
-    top:25px;right:6%;left:auto;transform:translate(0,0) scale(.78);
+    top:50%;right:auto;left:6%;
+    transform:translate(0,-50%) scale(.78);
 }
 .logo-ar{display:none;font-size:1.8rem;font-weight:800;white-space:nowrap;text-align:center;
     background:linear-gradient(135deg,#fff,#c084fc,var(--purple));
@@ -265,7 +266,7 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
     .modal-meta{grid-template-columns:1fr}.modal-preview{height:230px}
 }
 @media(max-width:480px){
-    .logo-intro.move{right:5%;transform:translate(0,0) scale(.72)}
+    .logo-intro.move{left:5%;transform:translate(0,-50%) scale(.72)}
     .logo-ar,.logo-en{font-size:1.45rem}.hero{padding-left:16px;padding-right:16px}
     .hero p{font-size:.92rem}.project-card{width:150px;height:215px}.cards{width:290px;height:245px}
     .project-card.right{transform:translate(10%,-50%) rotate(12deg)}
@@ -291,7 +292,6 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
 
 <nav>
     <div class="nav-inner">
-        <a class="nav-brand" href="#"><span>t</span>asmematweb</a>
         <ul class="nav-links">
             <li><a href="#work">الأعمال</a></li>
             <li><a href="#process">كيف نعمل</a></li>
@@ -453,7 +453,7 @@ const logo=document.getElementById("logoIntro");
 document.body.classList.add("loading");
 setTimeout(()=>logo.classList.add("show"),100);
 
-// بعد 4 ثوانٍ يفتح الموقع ويتحرك الشعار إلى مكانه في الشريط العلوي.
+// بعد 4 ثوانٍ يفتح الموقع ويتحرك الشعار إلى مكانه في الشريط العلوي (أقصى اليسار).
 setTimeout(()=>{
     document.body.classList.remove("loading");
     document.body.classList.add("ready");
