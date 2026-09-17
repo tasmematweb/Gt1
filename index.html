@@ -75,7 +75,7 @@
             top: 45%; left: 50%;
             margin-left: -170px;
             margin-top: -170px;
-            opacity: 0.2;
+            opacity: 0.16;
         }
 
         .wave-svg {
@@ -714,10 +714,10 @@
         }
 
         /* ====================================================
-           البطاقة التي تحتوي صورة — الزوايا المستديرة على الكرت
+           البطاقة التي تحتوي صورة
         ==================================================== */
         .wrap_card .card.has-image {
-            padding: 3px !important;
+            padding: 0 !important;
             overflow: hidden !important;
             display: flex !important;
             align-items: center;
@@ -725,19 +725,22 @@
             cursor: pointer;
             text-decoration: none;
             border-radius: 16px !important;
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
-            mask-image: radial-gradient(white, black);
+            background: #0a0514;
         }
 
         .wrap_card .card.has-image img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: contain !important;
-            object-position: center !important;
-            display: block !important;
-            margin: 0 !important;
-            border: 0 !important;
-            border-radius: 14px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            aspect-ratio: 9 / 19.5;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            border-radius: 18px;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6),
+                        0 0 15px rgba(0, 242, 254, 0.25);
+            display: block;
+            margin: 0;
         }
 
         .wrap_card .card.is-front {
