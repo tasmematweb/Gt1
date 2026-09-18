@@ -174,6 +174,80 @@ main{position:relative}
 .price{display:inline-flex;gap:8px;align-items:center;margin-top:18px;padding:10px 20px;border-radius:999px;border:1px solid rgba(168,85,247,.42);background:rgba(168,85,247,.12)}
 .price strong{color:#c084fc}
 
+/* ===== 3D Rotating Carousel (under "ماذا تحصل عليه") ===== */
+.carousel-3d-wrap {
+  width: 100%;
+  height: 520px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-top: 25px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(13,8,26,.45);
+}
+.carousel-3d-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 110%, rgba(168,85,247,.18), transparent 60%);
+}
+.carousel-3d-inner {
+  --w: 130px;
+  --h: 180px;
+  --translateZ: calc((var(--w) + var(--h)) + 0px);
+  --rotateX: -15deg;
+  --perspective: 1100px;
+  position: absolute;
+  width: var(--w);
+  height: var(--h);
+  top: 28%;
+  left: calc(50% - (var(--w) / 2) - 2.5px);
+  z-index: 2;
+  transform-style: preserve-3d;
+  transform: perspective(var(--perspective));
+  animation: carouselRotating 22s linear infinite;
+}
+@keyframes carouselRotating {
+  from {
+    transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(0);
+  }
+  to {
+    transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(1turn);
+  }
+}
+.carousel-3d-card {
+  position: absolute;
+  border: 2px solid rgba(var(--color-card), 0.9);
+  border-radius: 14px;
+  overflow: hidden;
+  inset: 0;
+  transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
+    translateZ(var(--translateZ));
+  box-shadow: 0 0 18px rgba(var(--color-card), 0.4);
+  transition: box-shadow .3s;
+}
+.carousel-3d-card:hover {
+  box-shadow: 0 0 32px rgba(var(--color-card), .95);
+}
+.carousel-3d-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #0000
+    radial-gradient(
+      circle,
+      rgba(var(--color-card), 0.2) 0%,
+      rgba(var(--color-card), 0.6) 80%,
+      rgba(var(--color-card), 0.9) 100%
+    );
+}
+/* ===== End 3D Carousel ===== */
+
 .process{
     position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:16px
 }
@@ -268,6 +342,7 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
     .cards{width:340px;height:280px}.project-card{width:175px;height:245px}
     .process{grid-template-columns:1fr}.features{grid-template-columns:1fr}
     .modal-meta{grid-template-columns:1fr}.modal-preview{height:230px}
+    .carousel-3d-wrap{height:420px}
 }
 @media(max-width:480px){
     .logo-intro.move{height:72px;padding-left:18px;transform:translate(0,0) scale(.85)}
@@ -277,6 +352,8 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
     .project-card.right{transform:translate(10%,-50%) rotate(12deg)}
     .project-card.left{transform:translate(-110%,-50%) rotate(-12deg)}
     .offer{padding:20px 14px}.chips{gap:7px}.chip{font-size:.72rem;padding:7px 10px}
+    .carousel-3d-inner{--w:100px;--h:140px}
+    .carousel-3d-wrap{height:340px}
 }
 @media(prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
@@ -350,6 +427,37 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
         </div>
         <div class="price"><span>السعر:</span><strong>4500 إلى 6500 ج.م</strong></div>
     </div>
+
+    <!-- ===== 3D Rotating Carousel ===== -->
+    <div class="carousel-3d-wrap reveal">
+      <div class="carousel-3d-inner" style="--quantity: 8;">
+        <div class="carousel-3d-card" style="--index: 0; --color-card: 168, 85, 247;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/7d/b6/ba/7db6ba10d0ec2efe49757053b72062f6.jpg" alt="Card 1" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 1; --color-card: 6, 182, 212;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/c0/e4/65/c0e465bcd96132d650da3b3784d5f48c.jpg" alt="Card 2" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 2; --color-card: 232, 121, 249;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/95/b4/a0/95b4a022ef028f8ecc36de03fa1224fd.jpg" alt="Card 3" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 3; --color-card: 168, 85, 247;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/7d/b6/ba/7db6ba10d0ec2efe49757053b72062f6.jpg" alt="Card 4" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 4; --color-card: 6, 182, 212;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/c0/e4/65/c0e465bcd96132d650da3b3784d5f48c.jpg" alt="Card 5" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 5; --color-card: 232, 121, 249;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/95/b4/a0/95b4a022ef028f8ecc36de03fa1224fd.jpg" alt="Card 6" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 6; --color-card: 168, 85, 247;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/7d/b6/ba/7db6ba10d0ec2efe49757053b72062f6.jpg" alt="Card 7" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 7; --color-card: 6, 182, 212;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/c0/e4/65/c0e465bcd96132d650da3b3784d5f48c.jpg" alt="Card 8" loading="lazy">
+        </div>
+      </div>
+    </div>
+    <!-- ===== End 3D Rotating Carousel ===== -->
 </section>
 
 <section class="section" id="process">
