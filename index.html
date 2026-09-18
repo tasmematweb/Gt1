@@ -177,7 +177,7 @@ main{position:relative}
 /* ===== 3D Rotating Carousel ===== */
 .carousel-3d-wrap {
   width: 100%;
-  height: 520px;
+  height: 640px;
   position: relative;
   display: flex;
   align-items: center;
@@ -196,11 +196,11 @@ main{position:relative}
   background: radial-gradient(circle at 50% 110%, rgba(168,85,247,.18), transparent 60%);
 }
 .carousel-3d-inner {
-  --w: 130px;
-  --h: 180px;
+  --w: 170px;
+  --h: 240px;
   --translateZ: calc((var(--w) + var(--h)) + 0px);
   --rotateX: -15deg;
-  --perspective: 1100px;
+  --perspective: 1200px;
   position: absolute;
   width: var(--w);
   height: var(--h);
@@ -209,7 +209,7 @@ main{position:relative}
   z-index: 2;
   transform-style: preserve-3d;
   transform: perspective(var(--perspective));
-  animation: carouselRotating 22s linear infinite;
+  animation: carouselRotating 24s linear infinite;
 }
 @keyframes carouselRotating {
   from {
@@ -222,16 +222,16 @@ main{position:relative}
 .carousel-3d-card {
   position: absolute;
   border: 2px solid rgba(var(--color-card), 0.9);
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
   inset: 0;
   transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
     translateZ(var(--translateZ));
-  box-shadow: 0 0 18px rgba(var(--color-card), 0.4);
+  box-shadow: 0 0 22px rgba(var(--color-card), 0.45);
   transition: box-shadow .3s;
 }
 .carousel-3d-card:hover {
-  box-shadow: 0 0 32px rgba(var(--color-card), .95);
+  box-shadow: 0 0 40px rgba(var(--color-card), .95);
 }
 .carousel-3d-img {
   width: 100%;
@@ -342,7 +342,8 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
     .cards{width:340px;height:280px}.project-card{width:175px;height:245px}
     .process{grid-template-columns:1fr}.features{grid-template-columns:1fr}
     .modal-meta{grid-template-columns:1fr}.modal-preview{height:230px}
-    .carousel-3d-wrap{height:420px}
+    .carousel-3d-wrap{height:520px}
+    .carousel-3d-inner{--w:130px;--h:185px}
 }
 @media(max-width:480px){
     .logo-intro.move{height:72px;padding-left:18px;transform:translate(0,0) scale(.85)}
@@ -352,8 +353,8 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
     .project-card.right{transform:translate(10%,-50%) rotate(12deg)}
     .project-card.left{transform:translate(-110%,-50%) rotate(-12deg)}
     .offer{padding:20px 14px}.chips{gap:7px}.chip{font-size:.72rem;padding:7px 10px}
-    .carousel-3d-inner{--w:100px;--h:140px}
-    .carousel-3d-wrap{height:340px}
+    .carousel-3d-inner{--w:105px;--h:150px}
+    .carousel-3d-wrap{height:400px}
 }
 @media(prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
@@ -430,7 +431,7 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
 
     <!-- ===== 3D Rotating Carousel ===== -->
     <div class="carousel-3d-wrap reveal">
-      <div class="carousel-3d-inner" style="--quantity: 3;">
+      <div class="carousel-3d-inner" style="--quantity: 6;">
         <div class="carousel-3d-card" style="--index: 0; --color-card: 168, 85, 247;">
           <img class="carousel-3d-img" src="https://i.pinimg.com/736x/af/79/fb/af79fbd5c9ceb7353c8b874526a5a2bf.jpg" alt="Card 1" loading="lazy">
         </div>
@@ -439,6 +440,15 @@ footer p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
         </div>
         <div class="carousel-3d-card" style="--index: 2; --color-card: 232, 121, 249;">
           <img class="carousel-3d-img" src="https://i.pinimg.com/736x/c9/43/06/c94306208d6867b11cfefe489c5c5f82.jpg" alt="Card 3" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 3; --color-card: 168, 85, 247;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/16/13/c2/1613c21d684dd9e3437f28f8932e2a45.jpg" alt="Card 4" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 4; --color-card: 6, 182, 212;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/1b/d6/e2/1bd6e21c387e1ed3177c4935e9ad5326.jpg" alt="Card 5" loading="lazy">
+        </div>
+        <div class="carousel-3d-card" style="--index: 5; --color-card: 232, 121, 249;">
+          <img class="carousel-3d-img" src="https://i.pinimg.com/736x/81/32/c1/8132c17fc3959a47da45e398ba3a5024.jpg" alt="Card 6" loading="lazy">
         </div>
       </div>
     </div>
