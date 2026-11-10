@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مشاركة الموقع للتوصيل</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f6f7f9; --text:#1a1a1a; --muted:#6b7280;
+    --accent:#16a34a; --accent-hover:#15803d; --border:#e5e7eb; --danger:#dc2626;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121212; --surface:#1e1e1e; --text:#f3f4f6; --muted:#9ca3af;
+      --accent:#22c55e; --accent-hover:#16a34a; --border:#2d2d2d; --danger:#f87171;
+    }
+    html{color-scheme:dark;}
+  }
+  :root[data-theme="dark"]{
+    --bg:#121212; --surface:#1e1e1e; --text:#f3f4f6; --muted:#9ca3af;
+    --accent:#22c55e; --accent-hover:#16a34a; --border:#2d2d2d; --danger:#f87171;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    display:flex; align-items:center; justify-content:center; min-height:100%;
+    padding-left:16px; padding-right:16px;
+  }
+  .card{
+    width:100%; max-width:420px; background:var(--surface);
+    border:1px solid var(--border); border-radius:16px; padding:28px 22px;
+    text-align:center;
+  }
+  h1{font-size:1.25rem; margin:0 0 8px;}
+  p.desc{color:var(--muted); font-size:0.95rem; line-height:1.6; margin:0 0 22px;}
+  button{
+    width:100%; padding:14px; font-size:1rem; font-weight:600;
+    border-radius:10px; border:none; cursor:pointer; margin-top:10px;
+  }
+  #askBtn{background:var(--accent); color:#fff;}
+  #askBtn:hover{background:var(--accent-hover);}
+  #sendBtn{background:var(--accent); color:#fff; display:none;}
+  #sendBtn:hover{background:var(--accent-hover);}
+  .status{margin-top:16px; font-size:0.9rem; color:var(--muted); min-height:1.2em;}
+  .error{color:var(--danger);}
+  .locbox{
+    display:none; margin-top:18px; padding:14px; border-radius:10px;
+    background:var(--bg); border:1px solid var(--border); text-align:right;
+    font-size:0.9rem;
+  }
+  .locbox b{color:var(--text);}
+  input[type=tel]{
+    width:100%; padding:12px; margin-top:14px; border-radius:10px;
+    border:1px solid var(--border); background:var(--bg); color:var(--text);
+    font-size:1rem; text-align:center;
+  }
+  label.small{display:block; font-size:0.8rem; color:var(--muted); margin-top:14px;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>مشاركة موقعك لإتمام التوصيل</h1>
+    <p class="desc">لتسهيل وصول طلبك بدقة، يرجى مشاركة موقعك الحالي. لن يُرسل موقعك إلا بعد موافقتك الصريحة وضغطك على زر الإرسال.</p>
+
+    <button id="askBtn">📍 تحديد موقعي</button>
+    <div class="status" id="status"></div>
+
+    <div class="locbox" id="locbox">
+      <div><b>خط العرض:</b> <span id="lat"></span></div>
+      <div><b>خط الطول:</b> <span id="lng"></span></div>
+    </div>
+
+    <label class="small" for="phone">رقم واتساب التوصيل (اختياري لو مُحدد مسبقًا)</label>
+    <input type="tel" id="phone" placeholder="مثال: 201xxxxxxxxx" value="201119024874">
+
+    <button id="sendBtn">📤 إرسال الموقع عبر واتساب</button>
+  </div>
+
+<script>
+const askBtn = document.getElementById('askBtn');
+const sendBtn = document.getElementById('sendBtn');
+const statusEl = document.getElementById('status');
+const locbox = document.getElementById('locbox');
+const latEl = document.getElementById('lat');
+const lngEl = document.getElementById('lng');
+const phoneInput = document.getElementById('phone');
+
+let currentLat = null, currentLng = null;
+
+function showError(msg){
+  statusEl.textContent = msg;
+  statusEl.classList.add('error');
+}
+
+askBtn.addEventListener('click', () => {
+  statusEl.classList.remove('error');
+  if (!window.isSecureContext) {
+    showError('تحديد الموقع لا يعمل إلا عبر رابط https. افتح الصفحة من رابط الموقع وليس من الملف مباشرة.');
+    return;
+  }
+  if (!navigator.geolocation) {
+    showError('المتصفح لا يدعم تحديد الموقع.');
+    return;
+  }
+  statusEl.textContent = 'جارٍ طلب الإذن بتحديد موقعك...';
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      currentLat = pos.coords.latitude.toFixed(6);
+      currentLng = pos.coords.longitude.toFixed(6);
+      latEl.textContent = currentLat;
+      lngEl.textContent = currentLng;
+      locbox.style.display = 'block';
+      sendBtn.style.display = 'block';
+      statusEl.textContent = 'تم تحديد الموقع. راجعه ثم اضغط إرسال.';
+    },
+    (err) => {
+      if (err.code === 1) showError('تم رفض إذن الموقع. فعّل إذن الموقع للمتصفح من إعدادات الموقع ثم أعد المحاولة.');
+      else if (err.code === 2) showError('تعذّر تحديد موقعك. تأكد من تشغيل GPS وحاول مرة أخرى.');
+      else if (err.code === 3) showError('انتهت مهلة تحديد الموقع. حاول مرة أخرى.');
+      else showError('حدث خطأ أثناء تحديد الموقع.');
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
+});
+
+sendBtn.addEventListener('click', () => {
+  const phone = phoneInput.value.replace(/[^0-9]/g, '');
+  if (!phone) {
+    statusEl.textContent = 'يرجى إدخال رقم واتساب صحيح.';
+    statusEl.classList.add('error');
+    return;
+  }
+  const mapsLink = `https://www.google.com/maps?q=${currentLat},${currentLng}`;
+  const text = encodeURIComponent(`موقعي لتوصيل الطلب:\n${mapsLink}`);
+  window.location.href = `https://wa.me/${phone}?text=${text}`;
+});
+</script>
+</body>
+</html>
